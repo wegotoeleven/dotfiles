@@ -29,51 +29,55 @@ prompt wego
 # Functions
 sign ()
 {
-    # Get available certificates
-    number=1
     IFS=$'\n'
-    for cert in $(/usr/bin/security find-certificate -a -c Developer | awk -F '=' '/"alis"/ {print $2}' | awk '/\(.*\)/ { print }' | sed 's/"//g')
+    UI_NUMBER=1
+
+    # Get available certificates
+    for FOUND_CERT in $(/usr/bin/security find-certificate -a -c Developer | awk -F '=' '/"alis"/ {print $2}' | awk '/\(.*\)/ { print }' | sed 's/"//g')
     do
-        cnames+=("${cert}")
-        echo "$number) ${cert}"
-        let "number += 1"
+        CERT_ARRAY+=("${FOUND_CERT}")
+        echo "${UI_NUMBER}) ${FOUND_CERT}"
+        let "UI_NUMBER += 1"
     done
+
     unset IFS
-    if [[ -z ${cert} ]]
+
+    # Select a certificate
+    if [[ -z ${FOUND_CERT} ]]
     then
         echo "No certificates available to sign. Exiting..."
-        exit 1
+        return 1
     else
         echo "Select a certificate: "
-        read cid
-        chosenCert=${cnames[${cid}]}
+        read CHOSEN_UI_NUMBER
+        CHOSEN_CERT=${CERT_ARRAY[${CHOSEN_UI_NUMBER}]}
     fi
 
     # Determine signing target and sign as required
-    file=$(basename "${1}")
+    FILE_NAME=$(basename "${1}")
     if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]
     then
         echo "Signing package..."
-        /usr/bin/productsign --sign "${chosenCert}" "${1}" "$(dirname "${1}")/Signed-${file}"
+        /usr/bin/productsign --sign "${CHOSEN_CERT}" "${1}" "$(dirname "${1}")/Signed-${FILE_NAME}"
     else
         echo "Signing code..."
-        /usr/bin/security cms -S -N "${chosenCert}" -i "${1}" -o "$(dirname "${1}")/Signed-${file}"
+        /usr/bin/security cms -S -N "${CHOSEN_CERT}" -i "${1}" -o "$(dirname "${1}")/Signed-${FILE_NAME}"
     fi
 }
 
 unsign ()
 {
     # Determine target and un-sign as required
-    file=$(basename "${1}")
+    FILE_NAME=$(basename "${1}")
     if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]
     then
         echo "Package found."
         /usr/sbin/pkgutil --expand "${1}" /tmp/expand.pkg
-        /usr/sbin/pkgutil --flatten /tmp/expand.pkg "$(dirname "$1")/Unsigned-${file}"
+        /usr/sbin/pkgutil --flatten /tmp/expand.pkg "$(dirname "$1")/Unsigned-${FILE_NAME}"
     else
         echo "Code found."
-        /usr/bin/openssl smime -inform DER -verify -in "${1}" -noverify -out "$(dirname "$1")/Unsigned-${file}"
-        /usr/bin/plutil -convert xml1 "$(dirname "$1")/Unsigned-${file}"
+        /usr/bin/openssl smime -inform DER -verify -in "${1}" -noverify -out "$(dirname "$1")/Unsigned-${FILE_NAME}"
+        /usr/bin/plutil -convert xml1 "$(dirname "$1")/Unsigned-${FILE_NAME}"
     fi
 }
 
@@ -92,30 +96,34 @@ checksign ()
 
 changemac ()
 {
-    # Get available interfaces
-    number=1
     IFS=$'\n'
-    for iface in $(/sbin/ifconfig -a | awk '/UP/ {print $1}' | sed 's/://g')
+    UI_NUMBER=1
+
+    # Get available interfaces
+    for INTERFACE in $(/sbin/ifconfig -a | awk '/UP/ {print $1}' | sed 's/://g')
     do
-        ifaces+=("${iface}")
-        echo "$number) ${iface}"
+        INTERFACE_ARRAY+=("${INTERFACE}")
+        echo "$UI_NUMBER) ${INTERFACE}"
         let "number += 1"
     done
+
     unset IFS
+
+    # Select an interface
     echo "Select an interface: "
-    read iid
-    chosenIface=${ifaces[${iid}]}
+    read INTERFACE_ID
+    CHOSEN_INTERFACE=${INTERFACE_ARRAY[${INTERFACE_ID}]}
 
     # Get MAC address or create new MAC
-    newmac="${1}"
-    if [[ -z "${newmac}" ]]
+    NEW_MAC="${1}"
+    if [[ -z "${NEW_MAC}" ]]
     then
         echo "Generating random MAC address..."
-        newmac=$(/usr/bin/openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
-        echo "New MAC address is ${newmac}"
+        NEW_MAC=$(/usr/bin/openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
+        echo "New MAC address is ${NEW_MAC}"
     fi
-    echo "Setting ${chosenIface} to ${newmac}..."
-    sudo /sbin/ifconfig "${chosenIface}" ether "${newmac}"
+    echo "Setting ${CHOSEN_INTERFACE} to ${NEW_MAC}..."
+    sudo /sbin/ifconfig "${CHOSEN_INTERFACE}" ether "${NEW_MAC}"
 }
 
 makedmg ()
@@ -124,10 +132,11 @@ makedmg ()
     if [ ! -d "${1}" ]
     then
         echo "Supplied content is not a folder. Exiting..."
+        return 1
     else
-        dmgName=$(basename "${1}")
-        dirName=$(dirname "${1}")
-        hdiutil create -volname "${dmgName}" -srcfolder "${1}" -ov -format UDZO "${dirName}"/"${dmgName}".dmg
+        DMG_NAME=$(basename "${1}")
+        DIRECTORY_NAME=$(DIRECTORY_NAME "${1}")
+        /usr/bin/hdiutil create -volname "${DMG_NAME}" -srcfolder "${1}" -ov -format UDZO "${DIRECTORY_NAME}"/"${DMG_NAME}".dmg
     fi
 }
 
@@ -143,8 +152,8 @@ finduti ()
 
 exportcert ()
 {
-    file=$(basename "${1}")
-    echo "cat /plist/dict/array/dict[1]/data/text()" | xmllint --nocdata --shell "${1}" | sed '1d;$d' | base64 -D > "$(dirname "$1")/exported-${file}.pem" 
+    CERTIFICATE=$(basename "${1}")
+    echo "cat /plist/dict/array/dict[1]/data/text()" | xmllint --nocdata --shell "${1}" | sed '1d;$d' | base64 -D > "$(dirname "$1")/exported-${CERTIFICATE}.pem" 
 }
 
 generatepubkey ()
@@ -162,46 +171,76 @@ removequarantine ()
     xattr -d com.apple.quarantine "${1}"
 }
 
-activate ()
-{
-    if [ -z "${1}" ]
-    then
-        venvdir="."
-    else
-        venvdir="${1}"
-    fi
+# activate ()
+# {
+#     if [ -z "${1}" ]
+#     then
+#         venvdir="."
+#     else
+#         venvdir="${1}"
+#     fi
     
-    if [ ! -e "${venvdir}/bin/activate" ]
+#     if [ ! -e "${venvdir}/bin/activate" ]
+#     then
+#         echo "Invalid virtualenv directory. Would you like to create?"
+#         read yno
+#         case $yno in
+
+#             [yY] | [yY][Ee][Ss] )
+#                 echo "Specify path to Python binary:" 
+#                 read pythonBin
+#                 pythonBin=$(which "${pythonBin}")
+#                 if [ -e "${pythonBin}" ]
+#                 then
+#                     echo "Creating virtualenv ${1} using ${pythonBin}..."
+#                     virtualenv -p "${pythonBin}" "${1}"
+#                 else
+#                     echo "Invalid Python binary location."
+#                     return 1
+#                 fi
+#                 ;;
+
+#             [nN] | [nN][Oo] )
+#                 yesNo="no"
+#                 return 1
+#                 ;;
+
+#             *)
+#                 echo "Invalid input."
+#                 return 1
+#                 ;;
+#         esac
+#     fi
+
+#     source "${venvdir}/bin/activate"
+# }
+
+cleanautopkgcache ()
+{
+    for AUTOPKG_CACHE_ITEM in $(find "/Users/stephenb/Library/Caches/AutoPkg" -type d -maxdepth 2 -mindepth 1)
+    do
+        echo "Deleting ${AUTOPKG_CACHE_ITEM}..."
+        rm -rf "${AUTOPKG_CACHE_ITEM}"
+    done
+}
+
+elevate ()
+{
+    open "jamfselfservice://content?entity=policy&id=255&action=execute"
+}
+
+checksubnet ()
+{
+    if [[ -z "${1}" ]]
     then
-        echo "Invalid virtualenv directory. Would you like to create?"
-        read yno
-        case $yno in
-
-            [yY] | [yY][Ee][Ss] )
-                echo "Specify path to Python binary:" 
-                read pythonBin
-                pythonBin=$(which "${pythonBin}")
-                if [ -e "${pythonBin}" ]
-                then
-                    echo "Creating virtualenv ${1} using ${pythonBin}..."
-                    virtualenv -p "${pythonBin}" "${1}"
-                else
-                    echo "Invalid Python binary location."
-                    return 1
-                fi
-                ;;
-
-            [nN] | [nN][Oo] )
-                yesNo="no"
-                return 1
-                ;;
-
-            *)
-                echo "Invalid input."
-                return 1
-                ;;
-        esac
+        echo "First 3 IP subnet octets not supplied. Bailing..."
+        return 1
     fi
-
-    source "${venvdir}/bin/activate"
+    for IP_OCTET_4 in $(seq 1 254)
+    do
+        if ping -c 1 $1.${IP_OCTET_4} -t 2 > /dev/null 2>&1
+        then 
+            echo "$1.$IP_OCTET_4 UP"
+        fi
+    done
 }
