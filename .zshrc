@@ -226,7 +226,7 @@ cleanautopkgcache ()
 
 elevate ()
 {
-    open "jamfselfservice://content?entity=policy&id=255&action=execute"
+    open "jamfselfservice://content?entity=policy&id=15&action=execute"
 }
 
 checksubnet ()
