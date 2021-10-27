@@ -135,7 +135,8 @@ makedmg ()
         return 1
     else
         DMG_NAME=$(basename "${1}")
-        DIRECTORY_NAME=$(DIRECTORY_NAME "${1}")
+        DIRECTORY_NAME=$(dirname "${1}")
+        echo "Creating dmg for ${DMG_NAME}..."
         /usr/bin/hdiutil create -volname "${DMG_NAME}" -srcfolder "${1}" -ov -format UDZO "${DIRECTORY_NAME}"/"${DMG_NAME}".dmg
     fi
 }
