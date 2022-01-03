@@ -27,14 +27,12 @@ promptinit
 prompt wego
 
 # Functions
-sign ()
-{
+sign() {
     IFS=$'\n'
     UI_NUMBER=1
 
     # Get available certificates
-    for FOUND_CERT in $(/usr/bin/security find-certificate -a -c Developer | awk -F '=' '/"alis"/ {print $2}' | awk '/\(.*\)/ { print }' | sed 's/"//g')
-    do
+    for FOUND_CERT in $(/usr/bin/security find-certificate -a -c Developer | awk -F '=' '/"alis"/ {print $2}' | awk '/\(.*\)/ { print }' | sed 's/"//g'); do
         CERT_ARRAY+=("${FOUND_CERT}")
         echo "${UI_NUMBER}) ${FOUND_CERT}"
         let "UI_NUMBER += 1"
@@ -43,8 +41,7 @@ sign ()
     unset IFS
 
     # Select a certificate
-    if [[ -z ${FOUND_CERT} ]]
-    then
+    if [[ -z ${FOUND_CERT} ]]; then
         echo "No certificates available to sign. Exiting..."
         return 1
     else
@@ -55,8 +52,7 @@ sign ()
 
     # Determine signing target and sign as required
     FILE_NAME=$(basename "${1}")
-    if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]
-    then
+    if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]; then
         echo "Signing package..."
         /usr/bin/productsign --sign "${CHOSEN_CERT}" "${1}" "$(dirname "${1}")/Signed-${FILE_NAME}"
     else
@@ -65,12 +61,10 @@ sign ()
     fi
 }
 
-unsign ()
-{
+unsign() {
     # Determine target and un-sign as required
     FILE_NAME=$(basename "${1}")
-    if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]
-    then
+    if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]; then
         echo "Package found."
         /usr/sbin/pkgutil --expand "${1}" /tmp/expand.pkg
         /usr/sbin/pkgutil --flatten /tmp/expand.pkg "$(dirname "$1")/Unsigned-${FILE_NAME}"
@@ -81,11 +75,9 @@ unsign ()
     fi
 }
 
-checksign ()
-{
+checksign() {
     # Determine target and check as required
-    if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]
-    then
+    if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]; then
         echo "Package found."
         /usr/sbin/pkgutil --check-signature "${1}"
     else
@@ -94,14 +86,12 @@ checksign ()
     fi
 }
 
-changemac ()
-{
+changemac() {
     IFS=$'\n'
     UI_NUMBER=1
 
     # Get available interfaces
-    for INTERFACE in $(/sbin/ifconfig -a | awk '/UP/ {print $1}' | sed 's/://g')
-    do
+    for INTERFACE in $(/sbin/ifconfig -a | awk '/UP/ {print $1}' | sed 's/://g'); do
         INTERFACE_ARRAY+=("${INTERFACE}")
         echo "$UI_NUMBER) ${INTERFACE}"
         let "number += 1"
@@ -126,11 +116,9 @@ changemac ()
     sudo /sbin/ifconfig "${CHOSEN_INTERFACE}" ether "${NEW_MAC}"
 }
 
-makedmg ()
-{
+makedmg() {
     # Determine if the content is a folder, exit if not
-    if [ ! -d "${1}" ]
-    then
+    if [[] ! -d "${1}" ]]; then
         echo "Supplied content is not a folder. Exiting..."
         return 1
     else
@@ -141,35 +129,57 @@ makedmg ()
     fi
 }
 
-whatismyip ()
-{
+whatismyip() {
     /usr/bin/dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'
 }
 
-finduti ()
-{
+finduti() {
     /usr/bin/mdls -name kMDItemContentType "${1}"
 }
 
-exportcert ()
-{
+exportcert() {
     CERTIFICATE=$(basename "${1}")
     echo "cat /plist/dict/array/dict[1]/data/text()" | xmllint --nocdata --shell "${1}" | sed '1d;$d' | base64 -D > "$(dirname "$1")/exported-${CERTIFICATE}.pem" 
 }
 
-generatepubkey ()
-{
+generatepubkey() {
     /usr/bin/ssh-keygen -y -f "${1}" > "${1}".pub
 }
 
-expandurl ()
-{
+expandurl() { 
     curl -sIL $1 2>&1 | awk '/^Location/ {print $2}' | tail -n1
 }
 
-removequarantine ()
-{
+removequarantine() {
     xattr -d com.apple.quarantine "${1}"
+}
+
+removexattr() {
+    xattr -cr "${1}"
+}
+
+cleanautopkgcache() {
+    for AUTOPKG_CACHE_ITEM in $(find "/Users/stephenb/Library/Caches/AutoPkg" -type d -maxdepth 2 -mindepth 1)
+    do
+        echo "Deleting ${AUTOPKG_CACHE_ITEM}..."
+        rm -rf "${AUTOPKG_CACHE_ITEM}"
+    done
+}
+
+elevate() {
+    open "jamfselfservice://content?entity=policy&id=15&action=execute"
+}
+
+checksubnet() {
+    if [[ -z "${1}" ]]; then
+        echo "First 3 IP subnet octets not supplied. Bailing..."
+        return 1
+    fi
+    for IP_OCTET_4 in $(seq 1 254); do
+        if ping -c 1 $1.${IP_OCTET_4} -t 2 > /dev/null 2>&1; then 
+            echo "$1.$IP_OCTET_4 UP"
+        fi
+    done
 }
 
 # activate ()
@@ -215,33 +225,3 @@ removequarantine ()
 
 #     source "${venvdir}/bin/activate"
 # }
-
-cleanautopkgcache ()
-{
-    for AUTOPKG_CACHE_ITEM in $(find "/Users/stephenb/Library/Caches/AutoPkg" -type d -maxdepth 2 -mindepth 1)
-    do
-        echo "Deleting ${AUTOPKG_CACHE_ITEM}..."
-        rm -rf "${AUTOPKG_CACHE_ITEM}"
-    done
-}
-
-elevate ()
-{
-    open "jamfselfservice://content?entity=policy&id=15&action=execute"
-}
-
-checksubnet ()
-{
-    if [[ -z "${1}" ]]
-    then
-        echo "First 3 IP subnet octets not supplied. Bailing..."
-        return 1
-    fi
-    for IP_OCTET_4 in $(seq 1 254)
-    do
-        if ping -c 1 $1.${IP_OCTET_4} -t 2 > /dev/null 2>&1
-        then 
-            echo "$1.$IP_OCTET_4 UP"
-        fi
-    done
-}

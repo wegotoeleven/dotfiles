@@ -3,8 +3,8 @@
 ## Table of Contents
 
 - [Purpose](#purpose)
-- [Includes:](#includes)
-  - [Included functions:](#included-functions)
+- [Includes](#includes)
+  - [Included functions](#included-functions)
 - [How to contribute](#how-to-contribute)
 - [Support](#support)
 - [License](#license)
@@ -13,7 +13,7 @@
 
 This is my collection of dotfiles that I use to customise my macOS terminal environment. 
 
-## Includes:
+## Includes
 
 - .profile for bash and sh
 - .zshrc for zsh. I don't use tools like `ohmyzsh` as I prefer to configure my environment manually
@@ -21,7 +21,7 @@ This is my collection of dotfiles that I use to customise my macOS terminal envi
 
 With the change to the default shell in macOS Catalina, my .zshrc dotfile contains the majority of configuration as it's my primary shell. Most of my functions are contained here, and not in my bash/sh .profile dotfile.
 
-### Included functions:
+### Included functions
 
 - sign
 - unsign
@@ -34,7 +34,10 @@ With the change to the default shell in macOS Catalina, my .zshrc dotfile contai
 - generatepubkey
 - expandurl
 - removequarantine
-- activate
+- removexattr
+- cleanautopkgcache
+- elevate
+- checksubnet
 - Some config profiles for some default app config
 
 ## How to contribute
