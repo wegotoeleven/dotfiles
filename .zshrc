@@ -1,33 +1,142 @@
-#### Exports
+##### Exports
 
-# Set path envar to homebrew directory at $HOME/.homebrew/, and custom binary folder at $HOME/.binaries
 export PATH=$HOME/.binaries:$HOME/.homebrew/bin:$PATH
 export FPATH=$HOME/.zsh:$HOME/.homebrew/share/zsh/site-functions:$FPATH
-
-# Enable cli colours
 export CLICOLOR=1
-
-# Set history options
 export HISTSIZE=100000
 export SAVEHIST=1000000
 
-#### Options
+##### Options
+
 setopt APPEND_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_NO_STORE
 setopt PROMPT_SUBST
 
-#### Plugins
+##### Plugins
 
-# Load prompt
 autoload -Uz promptinit
-
-# Set prompt theme
 promptinit
 prompt wego
 
-# Functions
-sign() {
+##### Declare functions
+
+# This function is used to "change" the Mac address of a chosen interface. Useful for configuring network controllers
+# behind captive portals for devices that don't support them
+
+changemac()
+{
+    IFS=$'\n'
+    UI_NUMBER=1
+
+    # Get available interfaces
+    for INTERFACE in $(/sbin/ifconfig -a | awk '/UP/ {print $1}' | sed 's/://g'); do
+        INTERFACE_ARRAY+=("${INTERFACE}")
+        echo "$UI_NUMBER) ${INTERFACE}"
+        let "number += 1"
+    done
+    unset IFS
+
+    # Select an interface
+    read "INTERFACE_ID?Select an interface: "
+    CHOSEN_INTERFACE=${INTERFACE_ARRAY[${INTERFACE_ID}]}
+
+    # Get MAC address or create new MAC
+    NEW_MAC="${1}"
+    if [[ -z "${NEW_MAC}" ]]; then
+        echo "Generating random MAC address..."
+        NEW_MAC=$(/usr/bin/openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
+        echo "New MAC address is ${NEW_MAC}"
+    fi
+    echo "Setting ${CHOSEN_INTERFACE} to ${NEW_MAC}..."
+    sudo /sbin/ifconfig "${CHOSEN_INTERFACE}" ether "${NEW_MAC}"
+}
+
+# This function is used to check the signature of installers or files
+
+checksign()
+{
+    # Determine target and check as required
+    if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]; then
+        echo "Package found."
+        /usr/sbin/pkgutil --check-signature "${1}"
+    else
+        echo "Code found."
+        /usr/bin/codesign -dr - --verbose=4 "${1}"
+    fi
+}
+
+# This function is used to check all devices on a specific subnet. Only works on the 4th octet.
+
+checksubnet()
+{
+    if [[ -z "${1}" ]]; then
+        echo "First 3 IP subnet octets not supplied. Bailing..."
+        return 1
+    fi
+    for IP_OCTET_4 in $(seq 1 254); do
+        if ping -c 1 $1.${IP_OCTET_4} -t 2 > /dev/null 2>&1; then
+            echo "$1.$IP_OCTET_4 UP"
+        fi
+    done
+}
+
+# This function is used to provide admin access using a Jamf Pro Self Service policy
+
+elevate()
+{
+    open "jamfselfservice://content?entity=policy&id=15&action=execute"
+}
+
+# This function is used to expand a URL
+
+expandurl()
+{
+    curl -sIL $1 2>&1 | awk '/^Location/ {print $2}' | tail -n1
+}
+
+# This function is used to pull out a certificate from a mobile config file
+
+exportcert()
+{
+    CERTIFICATE=$(basename "${1}")
+    echo "cat /plist/dict/array/dict[1]/data/text()" | xmllint --nocdata --shell "${1}" | sed '1d;$d' | base64 -D > "$(dirname "$1")/exported-${CERTIFICATE}.pem" 
+}
+
+# This function is used to determine the UTI of a file
+
+finduti()
+{
+    /usr/bin/mdls -name kMDItemContentType "${1}"
+}
+
+# This function is used to generate a public key from a private key
+
+generatepubkey()
+{
+    /usr/bin/ssh-keygen -y -f "${1}" > "${1}".pub
+}
+
+# This function creates DMG from a folder
+
+makedmg()
+{
+    # Determine if the content is a folder, exit if not
+    if [[ ! -d "${1}" ]]; then
+        echo "Supplied content is not a folder. Exiting..."
+        return 1
+    else
+        DMG_NAME=$(basename "${1}")
+        DIRECTORY_NAME=$(dirname "${1}")
+        echo "Creating dmg for ${DMG_NAME}..."
+        /usr/bin/hdiutil create -volname "${DMG_NAME}" -srcfolder "${1}" -ov -format UDZO "${DIRECTORY_NAME}"/"${DMG_NAME}".dmg
+    fi
+}
+
+# This function is used to sign an installer or file
+
+sign()
+{
     IFS=$'\n'
     UI_NUMBER=1
 
@@ -37,7 +146,6 @@ sign() {
         echo "${UI_NUMBER}) ${FOUND_CERT}"
         let "UI_NUMBER += 1"
     done
-
     unset IFS
 
     # Select a certificate
@@ -61,7 +169,10 @@ sign() {
     fi
 }
 
-unsign() {
+# This function is used to unsign an installer or file
+
+unsign()
+{
     # Determine target and un-sign as required
     FILE_NAME=$(basename "${1}")
     if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]; then
@@ -75,153 +186,9 @@ unsign() {
     fi
 }
 
-checksign() {
-    # Determine target and check as required
-    if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]; then
-        echo "Package found."
-        /usr/sbin/pkgutil --check-signature "${1}"
-    else
-        echo "Code found."
-        /usr/bin/codesign -dr - --verbose=4 "${1}"
-    fi
-}
+# This function is used to find the public IP address
 
-changemac() {
-    IFS=$'\n'
-    UI_NUMBER=1
-
-    # Get available interfaces
-    for INTERFACE in $(/sbin/ifconfig -a | awk '/UP/ {print $1}' | sed 's/://g'); do
-        INTERFACE_ARRAY+=("${INTERFACE}")
-        echo "$UI_NUMBER) ${INTERFACE}"
-        let "number += 1"
-    done
-
-    unset IFS
-
-    # Select an interface
-    echo "Select an interface: "
-    read INTERFACE_ID
-    CHOSEN_INTERFACE=${INTERFACE_ARRAY[${INTERFACE_ID}]}
-
-    # Get MAC address or create new MAC
-    NEW_MAC="${1}"
-    if [[ -z "${NEW_MAC}" ]]
-    then
-        echo "Generating random MAC address..."
-        NEW_MAC=$(/usr/bin/openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
-        echo "New MAC address is ${NEW_MAC}"
-    fi
-    echo "Setting ${CHOSEN_INTERFACE} to ${NEW_MAC}..."
-    sudo /sbin/ifconfig "${CHOSEN_INTERFACE}" ether "${NEW_MAC}"
-}
-
-makedmg() {
-    # Determine if the content is a folder, exit if not
-    if [[] ! -d "${1}" ]]; then
-        echo "Supplied content is not a folder. Exiting..."
-        return 1
-    else
-        DMG_NAME=$(basename "${1}")
-        DIRECTORY_NAME=$(dirname "${1}")
-        echo "Creating dmg for ${DMG_NAME}..."
-        /usr/bin/hdiutil create -volname "${DMG_NAME}" -srcfolder "${1}" -ov -format UDZO "${DIRECTORY_NAME}"/"${DMG_NAME}".dmg
-    fi
-}
-
-whatismyip() {
+whatismyip()
+{
     /usr/bin/dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'
 }
-
-finduti() {
-    /usr/bin/mdls -name kMDItemContentType "${1}"
-}
-
-exportcert() {
-    CERTIFICATE=$(basename "${1}")
-    echo "cat /plist/dict/array/dict[1]/data/text()" | xmllint --nocdata --shell "${1}" | sed '1d;$d' | base64 -D > "$(dirname "$1")/exported-${CERTIFICATE}.pem" 
-}
-
-generatepubkey() {
-    /usr/bin/ssh-keygen -y -f "${1}" > "${1}".pub
-}
-
-expandurl() { 
-    curl -sIL $1 2>&1 | awk '/^Location/ {print $2}' | tail -n1
-}
-
-removequarantine() {
-    xattr -d com.apple.quarantine "${1}"
-}
-
-removexattr() {
-    xattr -cr "${1}"
-}
-
-cleanautopkgcache() {
-    for AUTOPKG_CACHE_ITEM in $(find "/Users/stephenb/Library/Caches/AutoPkg" -type d -maxdepth 2 -mindepth 1)
-    do
-        echo "Deleting ${AUTOPKG_CACHE_ITEM}..."
-        rm -rf "${AUTOPKG_CACHE_ITEM}"
-    done
-}
-
-elevate() {
-    open "jamfselfservice://content?entity=policy&id=15&action=execute"
-}
-
-checksubnet() {
-    if [[ -z "${1}" ]]; then
-        echo "First 3 IP subnet octets not supplied. Bailing..."
-        return 1
-    fi
-    for IP_OCTET_4 in $(seq 1 254); do
-        if ping -c 1 $1.${IP_OCTET_4} -t 2 > /dev/null 2>&1; then 
-            echo "$1.$IP_OCTET_4 UP"
-        fi
-    done
-}
-
-# activate ()
-# {
-#     if [ -z "${1}" ]
-#     then
-#         venvdir="."
-#     else
-#         venvdir="${1}"
-#     fi
-    
-#     if [ ! -e "${venvdir}/bin/activate" ]
-#     then
-#         echo "Invalid virtualenv directory. Would you like to create?"
-#         read yno
-#         case $yno in
-
-#             [yY] | [yY][Ee][Ss] )
-#                 echo "Specify path to Python binary:" 
-#                 read pythonBin
-#                 pythonBin=$(which "${pythonBin}")
-#                 if [ -e "${pythonBin}" ]
-#                 then
-#                     echo "Creating virtualenv ${1} using ${pythonBin}..."
-#                     virtualenv -p "${pythonBin}" "${1}"
-#                 else
-#                     echo "Invalid Python binary location."
-#                     return 1
-#                 fi
-#                 ;;
-
-#             [nN] | [nN][Oo] )
-#                 yesNo="no"
-#                 return 1
-#                 ;;
-
-#             *)
-#                 echo "Invalid input."
-#                 return 1
-#                 ;;
-#         esac
-#     fi
-
-#     source "${venvdir}/bin/activate"
-# }
