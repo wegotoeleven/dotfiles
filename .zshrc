@@ -3,8 +3,16 @@
 export PATH=$HOME/.binaries:$HOME/.homebrew/bin:$PATH
 export FPATH=$HOME/.zsh:$HOME/.homebrew/share/zsh/site-functions:$FPATH
 export CLICOLOR=1
+export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=1000000
+
+##### Plugins
+
+autoload -Uz promptinit
+autoload -U compinit && compinit
+promptinit
+prompt wego
 
 ##### Options
 
@@ -13,11 +21,9 @@ setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_NO_STORE
 setopt PROMPT_SUBST
 
-##### Plugins
-
-autoload -Uz promptinit
-promptinit
-prompt wego
+##### Keybinds
+bindkey '\e[A' history-search-backward
+bindkey '\e[B' history-search-forward
 
 ##### Declare functions
 
@@ -81,12 +87,23 @@ checksubnet()
     done
 }
 
+# This function cleans a folder and all sub-folders of .DS_Store files
+
+cleandsstore()
+{
+    IFS=$'\n'
+    for DS_STORE_FILE in $(find . -name .DS_Store); do
+        rm $DS_STORE_FILE
+    done
+    unset IFS
+}
+
 # This function is used to provide admin access using a Jamf Pro Self Service policy
 
-elevate()
-{
-    open "jamfselfservice://content?entity=policy&id=15&action=execute"
-}
+# elevate()
+# {
+#     open "jamfselfservice://content?entity=policy&id=15&action=execute"
+# }
 
 # This function is used to expand a URL
 
@@ -141,7 +158,7 @@ sign()
     UI_NUMBER=1
 
     # Get available certificates
-    for FOUND_CERT in $(/usr/bin/security find-certificate -a -c Developer | awk -F '=' '/"alis"/ {print $2}' | awk '/\(.*\)/ { print }' | sed 's/"//g'); do
+    for FOUND_CERT in $(/usr/bin/security find-certificate -a -c Develop | awk -F '=' '/"alis"/ {print $2}' | awk '/\(.*\)/ { print }' | sed 's/"//g'); do
         CERT_ARRAY+=("${FOUND_CERT}")
         echo "${UI_NUMBER}) ${FOUND_CERT}"
         let "UI_NUMBER += 1"
