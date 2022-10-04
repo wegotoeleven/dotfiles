@@ -22,10 +22,12 @@ setopt HIST_NO_STORE
 setopt PROMPT_SUBST
 
 ##### Keybinds
+
 bindkey '\e[A' history-search-backward
 bindkey '\e[B' history-search-forward
 
 ##### Source extras
+
 if [[ -e "${HOME}/.zshrc-extra" ]]; then
     source "${HOME}/.zshrc-extra"
 fi
