@@ -25,6 +25,11 @@ setopt PROMPT_SUBST
 bindkey '\e[A' history-search-backward
 bindkey '\e[B' history-search-forward
 
+##### Source extras
+if [[ -e "${HOME}/.zshrc-extra" ]]; then
+    source "${HOME}/.zshrc-extra"
+fi
+
 ##### Declare functions
 
 # This function is used to "change" the Mac address of a chosen interface. Useful for configuring network controllers
