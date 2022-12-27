@@ -6,6 +6,7 @@ export CLICOLOR=1
 export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=1000000
+export EDITOR="code -w"
 
 ##### Plugins
 
@@ -111,6 +112,13 @@ cleandsstore()
 # {
 #     open "jamfselfservice://content?entity=policy&id=15&action=execute"
 # }
+
+# This function is used to output the date and time in ISO format
+
+datetimeiso()
+{
+    /bin/date +%Y-%m-%d-%H-%M-%S
+}
 
 # This function is used to expand a URL
 
