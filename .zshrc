@@ -120,6 +120,21 @@ datetimeiso()
     /bin/date +%Y-%m-%d-%H-%M-%S
 }
 
+# This function is used to decrypt and encrypted string. Salt and passphrase to convert it to plain text. $2 is the
+# salt, $3 is the passphrase
+
+decryptString()
+{
+	/bin/echo "${1}" | /usr/bin/openssl enc -aes256 -d -a -A -md md5 -S "${2}" -k "${3}"
+}
+
+# This function is used to encrypt a string. Salt and passphrase to encrypt it; $2 is the salt, $3 is the passphrase
+
+encryptString()
+{
+	/bin/echo "${1}" | /usr/bin/openssl enc -aes256 -a -A -md md5 -S "${2}" -k "${3}"
+}
+
 # This function is used to expand a URL
 
 expandurl()
