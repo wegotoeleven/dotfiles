@@ -16,7 +16,7 @@ autoload -Uz vcs_info
 prompt wego
 
 ##### Styles
-zstyle ':vcs_info:git:*' formats '(%b)'
+zstyle ':vcs_info:git:*' formats '(%b) '
 
 ##### Options
 
