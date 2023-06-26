@@ -20,7 +20,7 @@ zstyle ':vcs_info:git:*' formats '(%b) '
 
 ##### Options
 
-setopt APPEND_HISTORY
+setopt SHARE_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_NO_STORE
 setopt PROMPT_SUBST
