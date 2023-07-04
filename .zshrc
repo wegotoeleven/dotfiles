@@ -11,14 +11,17 @@ export EDITOR="code -w"
 
 ##### Plugins
 
-autoload -Uz promptinit
-autoload -U compinit && compinit
-promptinit
+autoload -Uz compinit && compinit
+autoload -Uz promptinit && promptinit
+autoload -Uz vcs_info
 prompt wego
+
+##### Styles
+zstyle ':vcs_info:git:*' formats '(%b) '
 
 ##### Options
 
-setopt APPEND_HISTORY
+setopt SHARE_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_NO_STORE
 setopt PROMPT_SUBST
@@ -35,6 +38,13 @@ if [[ -e "${HOME}/.zshrc-extra" ]]; then
 fi
 
 ##### Declare functions
+
+# Pre-command
+
+precmd()
+{
+    vcs_info
+}
 
 # This function is used to "change" the Mac address of a chosen interface. Useful for configuring network controllers
 # behind captive portals for devices that don't support them
