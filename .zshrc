@@ -6,6 +6,7 @@ export CLICOLOR=1
 export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=1000000
+export QUOTING_STYLE=literal
 export EDITOR="code -w"
 
 ##### Plugins
