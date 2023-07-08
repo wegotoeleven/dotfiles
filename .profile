@@ -15,3 +15,11 @@ export EDITOR="code -w"
 if [[ -e "${HOME}/.profile-extra" ]]; then
     source "${HOME}/.profile-extra"
 fi
+
+##### Source environment variables if they exist
+
+if [[ -e "${HOME}/.env" ]]; then
+    set -o allexport
+    source "${HOME}/.env"
+    set +o allexport
+fi

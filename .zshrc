@@ -37,6 +37,14 @@ if [[ -e "${HOME}/.zshrc-extra" ]]; then
     source "${HOME}/.zshrc-extra"
 fi
 
+##### Source environment variables if they exist
+
+if [[ -e "${HOME}/.env" ]]; then
+    set -o allexport
+    source "${HOME}/.env"
+    set +o allexport
+fi
+
 ##### Declare functions
 
 # Pre-command
