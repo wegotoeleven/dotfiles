@@ -63,7 +63,7 @@ changemac()
     UI_NUMBER=1
 
     # Get available interfaces
-    for INTERFACE in $(/sbin/ifconfig -a | awk '/UP/ {print $1}' | sed 's/://g'); do
+    for INTERFACE in $(ifconfig -a | awk '/UP/ {print $1}' | sed 's/://g'); do
         INTERFACE_ARRAY+=("${INTERFACE}")
         echo "$UI_NUMBER) ${INTERFACE}"
         let "number += 1"
@@ -78,11 +78,11 @@ changemac()
     NEW_MAC="${1}"
     if [[ -z "${NEW_MAC}" ]]; then
         echo "Generating random MAC address..."
-        NEW_MAC=$(/usr/bin/openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
+        NEW_MAC=$(openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
         echo "New MAC address is ${NEW_MAC}"
     fi
     echo "Setting ${CHOSEN_INTERFACE} to ${NEW_MAC}..."
-    sudo /sbin/ifconfig "${CHOSEN_INTERFACE}" ether "${NEW_MAC}"
+    sudo ifconfig "${CHOSEN_INTERFACE}" ether "${NEW_MAC}"
 }
 
 # This function is used to check the signature of installers or files
@@ -92,10 +92,10 @@ checksign()
     # Determine target and check as required
     if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]; then
         echo "Package found."
-        /usr/sbin/pkgutil --check-signature "${1}"
+        pkgutil --check-signature "${1}"
     else
         echo "Code found."
-        /usr/bin/codesign -dr - --verbose=4 "${1}"
+        codesign -dr - --verbose=4 "${1}"
     fi
 }
 
@@ -136,7 +136,7 @@ cleandsstore()
 
 datetimeiso()
 {
-    /bin/date +%Y-%m-%d-%H-%M-%S
+    date +%Y-%m-%d-%H-%M-%S
 }
 
 # This function is used to decrypt and encrypted string. Salt and passphrase to convert it to plain text. $2 is the
@@ -144,14 +144,22 @@ datetimeiso()
 
 decryptString()
 {
-	/bin/echo "${1}" | /usr/bin/openssl enc -aes256 -d -a -A -md md5 -S "${2}" -k "${3}"
+	echo "${1}" | openssl enc -aes256 -d -a -A -md md5 -S "${2}" -k "${3}"
+}
+
+# This function updates all Docker containers within a compose file, ups them and prunes any old images
+
+dockercomposeupdate()
+{
+    docker compose -f $1 pull
+    docker compose -f $1 up -d --remove-orphans
 }
 
 # This function is used to encrypt a string. Salt and passphrase to encrypt it; $2 is the salt, $3 is the passphrase
 
 encryptString()
 {
-	/bin/echo "${1}" | /usr/bin/openssl enc -aes256 -a -A -md md5 -S "${2}" -k "${3}"
+	echo "${1}" | openssl enc -aes256 -a -A -md md5 -S "${2}" -k "${3}"
 }
 
 # This function is used to expand a URL
@@ -173,14 +181,14 @@ exportcert()
 
 finduti()
 {
-    /usr/bin/mdls -name kMDItemContentType "${1}"
+    mdls -name kMDItemContentType "${1}"
 }
 
 # This function is used to generate a public key from a private key
 
 generatepubkey()
 {
-    /usr/bin/ssh-keygen -y -f "${1}" > "${1}".pub
+    ssh-keygen -y -f "${1}" > "${1}".pub
 }
 
 # This function creates DMG from a folder
@@ -195,7 +203,7 @@ makedmg()
         DMG_NAME=$(basename "${1}")
         DIRECTORY_NAME=$(dirname "${1}")
         echo "Creating dmg for ${DMG_NAME}..."
-        /usr/bin/hdiutil create -volname "${DMG_NAME}" -srcfolder "${1}" -ov -format UDZO "${DIRECTORY_NAME}"/"${DMG_NAME}".dmg
+        hdiutil create -volname "${DMG_NAME}" -srcfolder "${1}" -ov -format UDZO "${DIRECTORY_NAME}"/"${DMG_NAME}".dmg
     fi
 }
 
@@ -207,7 +215,7 @@ sign()
     UI_NUMBER=1
 
     # Get available certificates
-    for FOUND_CERT in $(/usr/bin/security find-certificate -a -c Develop | awk -F '=' '/"alis"/ {print $2}' | awk '/\(.*\)/ { print }' | sed 's/"//g'); do
+    for FOUND_CERT in $(security find-certificate -a -c Develop | awk -F '=' '/"alis"/ {print $2}' | awk '/\(.*\)/ { print }' | sed 's/"//g'); do
         CERT_ARRAY+=("${FOUND_CERT}")
         echo "${UI_NUMBER}) ${FOUND_CERT}"
         let "UI_NUMBER += 1"
@@ -228,10 +236,10 @@ sign()
     FILE_NAME=$(basename "${1}")
     if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]; then
         echo "Signing package..."
-        /usr/bin/productsign --sign "${CHOSEN_CERT}" "${1}" "$(dirname "${1}")/Signed-${FILE_NAME}"
+        productsign --sign "${CHOSEN_CERT}" "${1}" "$(dirname "${1}")/Signed-${FILE_NAME}"
     else
         echo "Signing code..."
-        /usr/bin/security cms -S -N "${CHOSEN_CERT}" -i "${1}" -o "$(dirname "${1}")/Signed-${FILE_NAME}"
+        security cms -S -N "${CHOSEN_CERT}" -i "${1}" -o "$(dirname "${1}")/Signed-${FILE_NAME}"
     fi
 }
 
@@ -243,12 +251,12 @@ unsign()
     FILE_NAME=$(basename "${1}")
     if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]; then
         echo "Package found."
-        /usr/sbin/pkgutil --expand "${1}" /tmp/expand.pkg
-        /usr/sbin/pkgutil --flatten /tmp/expand.pkg "$(dirname "$1")/Unsigned-${FILE_NAME}"
+        pkgutil --expand "${1}" /tmp/expand.pkg
+        pkgutil --flatten /tmp/expand.pkg "$(dirname "$1")/Unsigned-${FILE_NAME}"
     else
         echo "Code found."
-        /usr/bin/openssl smime -inform DER -verify -in "${1}" -noverify -out "$(dirname "$1")/Unsigned-${FILE_NAME}"
-        /usr/bin/plutil -convert xml1 "$(dirname "$1")/Unsigned-${FILE_NAME}"
+        openssl smime -inform DER -verify -in "${1}" -noverify -out "$(dirname "$1")/Unsigned-${FILE_NAME}"
+        plutil -convert xml1 "$(dirname "$1")/Unsigned-${FILE_NAME}"
     fi
 }
 
@@ -256,5 +264,5 @@ unsign()
 
 whatismyip()
 {
-    /usr/bin/dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'
+    dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'
 }
