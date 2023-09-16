@@ -66,7 +66,7 @@ changemac()
     for INTERFACE in $(ifconfig -a | awk '/UP/ {print $1}' | sed 's/://g'); do
         INTERFACE_ARRAY+=("${INTERFACE}")
         echo "$UI_NUMBER) ${INTERFACE}"
-        let "number += 1"
+        let "UI_NUMBER += 1"
     done
     unset IFS
 
