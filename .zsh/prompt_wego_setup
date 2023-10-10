@@ -3,7 +3,7 @@ CURRENT_SHELL=$(ps -p $$ 2>/dev/null | tail -n 1 | awk '{ print $4 }' | tr -d '-
 
 # Set prompt
 #    <Show host and user> <show directory> <---Show current shell---> <%>
-if [[ -n $SSH_TTY ]]; then
+if [[ -z $SSH_TTY ]]; then
     PROMPT='%B%F{green}%n@%m%f%b %B%F{blue}%c%f%b %F{red}${vcs_info_msg_0_}%f%F{245}(${CURRENT_SHELL})%f %% '
 else
     PROMPT='%B%F{red}%n@%m%f%b %B%F{blue}%c%f%b %F{red}${vcs_info_msg_0_}%f%F{245}(${CURRENT_SHELL})%f %% '
