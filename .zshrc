@@ -243,6 +243,19 @@ sign()
     fi
 }
 
+# This function mimics Linux "tree" functionality
+
+tree()
+{
+    PATH_TO_CHECK="${1}"
+    if [[ -z "${PATH_TO_CHECK}" ]];
+    then
+        PATH_TO_CHECK=.
+    fi
+
+    find "${PATH_TO_CHECK}" -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
+}
+
 # This function is used to unsign an installer or file
 
 unsign()
