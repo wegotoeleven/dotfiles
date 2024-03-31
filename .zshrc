@@ -17,6 +17,7 @@ autoload -Uz vcs_info
 prompt wego
 
 ##### Styles
+
 zstyle ':vcs_info:git:*' formats '(%b) '
 
 ##### Options
@@ -125,13 +126,6 @@ cleandsstore()
     unset IFS
 }
 
-# This function is used to provide admin access using a Jamf Pro Self Service policy
-
-# elevate()
-# {
-#     open "jamfselfservice://content?entity=policy&id=15&action=execute"
-# }
-
 # This function is used to output the date and time in ISO format
 
 datetimeiso()
@@ -145,14 +139,6 @@ datetimeiso()
 decryptString()
 {
 	echo "${1}" | openssl enc -aes256 -d -a -A -md md5 -S "${2}" -k "${3}"
-}
-
-# This function updates all Docker containers within a compose file, ups them and prunes any old images
-
-dockercomposeupdate()
-{
-    docker compose -f $1 pull
-    docker compose -f $1 up -d --remove-orphans
 }
 
 # This function is used to encrypt a string. Salt and passphrase to encrypt it; $2 is the salt, $3 is the passphrase
