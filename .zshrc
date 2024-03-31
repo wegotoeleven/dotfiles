@@ -130,7 +130,7 @@ cleandsstore()
 
 datetimeiso()
 {
-    date +%Y-%m-%d-%H-%M-%S
+    date '+%Y-%m-%d-%H-%M-%S'
 }
 
 # This function is used to decrypt and encrypted string. Salt and passphrase to convert it to plain text. $2 is the
