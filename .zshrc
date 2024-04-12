@@ -29,8 +29,8 @@ setopt PROMPT_SUBST
 
 ##### Keybinds
 
-bindkey '\e[A' history-search-backward
-bindkey '\e[B' history-search-forward
+bindkey "^[[A" history-search-backward
+bindkey "^[[B" history-search-forward
 
 ##### Source extras
 
