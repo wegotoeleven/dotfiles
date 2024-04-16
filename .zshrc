@@ -29,8 +29,8 @@ setopt PROMPT_SUBST
 
 ##### Keybinds
 
-bindkey "^[[A" history-search-backward
-bindkey "^[[B" history-search-forward
+bindkey "${terminfo[kcuu1]}" up-line-or-search
+bindkey "${terminfo[kcud1]}" down-line-or-search
 
 ##### Source extras
 
