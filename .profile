@@ -1,6 +1,5 @@
-#### Exports
-
-export PATH=$HOME/.binaries:$HOME/.homebrew/bin:$PATH
+# Configure shell
+export PATH=${HOME}/.binaries:${HOME}/.homebrew/bin:${PATH}
 export CLICOLOR=1
 export HISTFILE=$HOME/.sh_history
 export HISTSIZE=100000
@@ -10,16 +9,10 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 export QUOTING_STYLE=literal
 export EDITOR="code -w"
 
-##### Source extras
-
+# Do some sourcing
 if [[ -e "${HOME}/.profile-extra" ]]; then
     source "${HOME}/.profile-extra"
 fi
-
-##### Source environment variables if they exist
-
-if [[ -e "${HOME}/.env" ]]; then
-    set -o allexport
-    source "${HOME}/.env"
-    set +o allexport
+if [[ -e "${HOME}/.aliases" ]]; then
+    source "${HOME}/.aliases"
 fi
