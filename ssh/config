@@ -1,0 +1,19 @@
+Host rd1user-stephenwb1 shasys2 rd1* sha* lon* wt3* ofc*
+  user stephenwb
+  Include ~/.step/ssh/includes
+
+Host drax drax*
+  User wegotoeleven
+
+Match host *,!rd1*,!sha*,!lon*,!wt3*,!ofc* exec "uname | grep -qi 'darwin'"
+  IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+  UseKeychain yes
+
+Match host *,!rd1*,!sha*,!lon*,!wt3*,!ofc* exec "uname | grep -qi 'linux'"
+  IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+Host *
+  UserKnownHostsFile ~/.ssh/known_hosts
+  StrictHostKeyChecking ask
+  ForwardAgent yes
+  AddKeysToAgent yes

@@ -46,7 +46,7 @@ checksubnet() {
         return 1
     fi
     for IP_OCTET_4 in $(seq 1 254); do
-        if ping -c 1 $1.${IP_OCTET_4} -t 2 > /dev/null 2>&1; then
+        if ping -c 1 $1.${IP_OCTET_4} -t 2 >/dev/null 2>&1; then
             echo "$1.$IP_OCTET_4 UP"
         fi
     done
@@ -69,12 +69,12 @@ datetimeiso() {
 # This function is used to decrypt and encrypted string. Salt and passphrase to convert it to plain text. $2 is the
 # salt, $3 is the passphrase
 decryptString() {
-	echo "${1}" | openssl enc -aes256 -d -a -A -md md5 -S "${2}" -k "${3}"
+    echo "${1}" | openssl enc -aes256 -d -a -A -md md5 -S "${2}" -k "${3}"
 }
 
 # This function is used to encrypt a string. Salt and passphrase to encrypt it; $2 is the salt, $3 is the passphrase
 encryptString() {
-	echo "${1}" | openssl enc -aes256 -a -A -md md5 -S "${2}" -k "${3}"
+    echo "${1}" | openssl enc -aes256 -a -A -md md5 -S "${2}" -k "${3}"
 }
 
 # This function is used to expand a URL
@@ -85,7 +85,7 @@ expandurl() {
 # This function is used to pull out a certificate from a mobile config file
 exportcert() {
     CERTIFICATE=$(basename "${1}")
-    echo "cat /plist/dict/array/dict[1]/data/text()" | xmllint --nocdata --shell "${1}" | sed '1d;$d' | base64 -D > "$(dirname "$1")/exported-${CERTIFICATE}.pem" 
+    echo "cat /plist/dict/array/dict[1]/data/text()" | xmllint --nocdata --shell "${1}" | sed '1d;$d' | base64 -D >"$(dirname "$1")/exported-${CERTIFICATE}.pem"
 }
 
 # This function is used to determine the UTI of a file
@@ -95,7 +95,7 @@ finduti() {
 
 # This function is used to generate a public key from a private key
 generatepubkey() {
-    ssh-keygen -y -f "${1}" > "${1}".pub
+    ssh-keygen -y -f "${1}" >"${1}".pub
 }
 
 # This function creates DMG from a folder
@@ -149,8 +149,7 @@ sign() {
 # This function mimics Linux "tree" functionality
 tree() {
     PATH_TO_CHECK="${1}"
-    if [[ -z "${PATH_TO_CHECK}" ]];
-    then
+    if [[ -z "${PATH_TO_CHECK}" ]]; then
         PATH_TO_CHECK=.
     fi
     find "${PATH_TO_CHECK}" -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
