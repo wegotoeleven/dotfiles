@@ -2,9 +2,10 @@
 CURRENT_SHELL=$(ps -p $$ 2>/dev/null | tail -n 1 | awk '{ print $4 }' | tr -d '-')
 
 # Set prompt
-#    <Show host and user> <show directory> <---Show current shell---> <%>
-if [[ -z $SSH_TTY ]]; then
+if [[ -z $SSH_CLIENT ]]; then
     PROMPT='%B%F{green}%n@%m%f%b %B%F{blue}%c%f%b %F{red}${vcs_info_msg_0_}%f%F{245}(${CURRENT_SHELL})%f %% '
+    #      <Show host and user-> <show directory> <-----------------Show current shell-----------------> <%>
 else
     PROMPT='%B%F{magenta}%n@%m%f%b %B%F{blue}%c%f%b %F{red}${vcs_info_msg_0_}%f%F{245}(${CURRENT_SHELL})%f %% '
 fi
+
