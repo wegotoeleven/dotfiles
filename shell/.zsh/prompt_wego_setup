@@ -8,4 +8,3 @@ if [[ -z $SSH_CLIENT ]]; then
 else
     PROMPT='%B%F{magenta}%n@%m%f%b %B%F{blue}%c%f%b %F{red}${vcs_info_msg_0_}%f%F{245}(${CURRENT_SHELL})%f %% '
 fi
-
