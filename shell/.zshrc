@@ -21,6 +21,7 @@ setopt HIST_SAVE_NO_DUPS
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_NO_STORE
 setopt PROMPT_SUBST
+bindkey -e
 bindkey "${terminfo[kcuu1]}" up-line-or-search
 bindkey "${terminfo[kcud1]}" down-line-or-search
 
