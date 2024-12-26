@@ -47,15 +47,19 @@ setopt NO_HIST_NO_STORE       # Ensure history for the current session is includ
 
 ##### Key Bindings
 
-bindkey -e                             # Use Emacs keybindings
-bindkey "${terminfo[kcuu1]}" up-line-or-search   # Search history with up arrow
-bindkey "${terminfo[kcud1]}" down-line-or-search # Search history with down arrow
+# Enable vi mode
+set -o vi
+
+# Arrow key history search
+bindkey "${terminfo[kcuu1]}" up-line-or-search      # Search history with up arrow
+bindkey "${terminfo[kcud1]}" down-line-or-search    # Search history with down arrow
+bindkey "^R" history-incremental-search-backward    # Search history with Ctrl+R
 
 ##### Additional Configurations
 
 # Source extra configuration files
 for extra_file in "${HOME}/.zshrc-extra" "${HOME}/.aliases"; do
-    [[ -e "$extra_file" ]] && source "$extra_file"
+    [[ -e "${extra_file}" ]] && source "${extra_file}"
 done
 
 ##### Functions

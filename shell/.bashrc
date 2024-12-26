@@ -1,22 +1,54 @@
-# Configure shell
-export PATH=${HOME}/.binaries:${HOME}/.homebrew/bin:${PATH}
+##### Environment Variables
+
+# Add custom binaries to the PATH
+export PATH="${HOME}/.binaries:$PATH"
+
+# Enable colored output (handled differently in Bash)
 export CLICOLOR=1
-export HISTFILE=$HOME/.sh_history
-export HISTSIZE=100000
-export CURRENT_SHELL=$(ps -p $$ 2>/dev/null | tail -n 1 | awk '{ print $4 }' | tr -d '-')
-export PS1='\[\033[1;32m\]\u@\h\[\033[00m\] \[\033[1;34m\]\W\[\033[00m\] \[\033[38;5;245m\](${CURRENT_SHELL})\[\033[00m\] % '
+
+# History configuration
+export HISTFILE="${HOME}/.bash_history"
+export HISTSIZE=100000       # Number of commands to keep in memory
+export HISTFILESIZE=1000000  # Number of commands to save to file
+export HISTCONTROL=ignoredups:erasedups # Avoid duplicate history entries
 export BASH_SILENCE_DEPRECATION_WARNING=1
-export QUOTING_STYLE=literal
-if which code &>/dev/null; then
+
+# Set default editor
+if command -v code &>/dev/null; then
     export EDITOR="code -w"
 else
     export EDITOR=vi
 fi
 
-# Do some sourcing
-if [[ -e "${HOME}/.profile-extra" ]]; then
-    source "${HOME}/.profile-extra"
-fi
-if [[ -e "${HOME}/.aliases" ]]; then
-    source "${HOME}/.aliases"
-fi
+##### Prompt and Theme Configuration
+
+# Colors
+PURE_COLOR_RESET="\[\e[0m\]"
+PURE_COLOR_DIR="\[\e[1;34m\]"       # Bright blue
+PURE_COLOR_GIT="\[\e[1;35m\]"       # Bright magenta
+
+# Set the Bash prompt
+PS1="\n${PURE_COLOR_DIR}\w\n${PURE_COLOR_GIT}❯ ${PURE_COLOR_RESET}"
+
+##### Shell Options
+
+# Enable shared history across sessions
+shopt -s histappend              # Append to the history file, don't overwrite it
+PROMPT_COMMAND="history -a; history -c; history -r" # Sync history after every command
+
+##### Key Bindings
+
+# Enable vi mode
+set -o vi
+
+# Arrow key history search (requires `bind` instead of `bindkey`)
+bind '"\e[A": history-search-backward'   # Up arrow
+bind '"\e[B": history-search-forward'    # Down arrow
+bind '"\C-r": reverse-search-history'    # Ctrl+R for incremental search
+
+##### Additional Configurations
+
+# Source extra configuration files
+for extra_file in "${HOME}/.bashrc-extra" "${HOME}/.aliases"; do
+    [[ -f "${extra_file}" ]] && source "${extra_file}"
+done
