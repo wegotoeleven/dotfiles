@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDisplayName</key>
+			<string>Dock</string>
+			<key>PayloadIdentifier</key>
+			<string>BDCA1D59-E71D-47E6-9477-0CE471F2680F</string>
+			<key>PayloadOrganization</key>
+			<string></string>
+			<key>PayloadType</key>
+			<string>com.apple.dock</string>
+			<key>PayloadUUID</key>
+			<string>DDD31C3C-0A58-4AAA-8B22-C662F9BCDB54</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>autohide</key>
+			<true/>
+			<key>autohide-immutable</key>
+			<true/>
+			<key>launchanim-immutable</key>
+			<true/>
+			<key>magnify-immutable</key>
+			<true/>
+			<key>magsize-immutable</key>
+			<true/>
+			<key>orientation</key>
+			<string>bottom</string>
+			<key>show-recents</key>
+			<false/>
+			<key>size-immutable</key>
+			<true/>
+			<key>static-others</key>
+			<array>
+				<dict>
+					<key>tile-data</key>
+					<dict>
+						<key>displayas</key>
+						<integer>1</integer>
+                		<key>home directory relative</key>
+                		<string>~</string>
+						<key>showas</key>
+						<integer>3</integer>
+					</dict>
+					<key>tile-type</key>
+					<string>directory-tile</string>
+				</dict>
+			</array>
+			<key>tilesize</key>
+			<integer>48</integer>
+		</dict>
+	</array>
+	<key>PayloadDisplayName</key>
+	<string>macOS - Dock Settings</string>
+	<key>PayloadIdentifier</key>
+	<string>4B8255F7-0FF8-43F3-ADD0-54D22B702B28</string>
+	<key>PayloadOrganization</key>
+	<string>wegotoeleven</string>
+	<key>PayloadScope</key>
+	<string>User</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>4B7B3E37-26FC-4CF6-B5D3-4355ADD6DEBA</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

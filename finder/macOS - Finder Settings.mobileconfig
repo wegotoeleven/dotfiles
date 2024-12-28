@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>FinderSpawnTab</key>
+			<false/>
+			<key>FXDefaultSearchScope</key>
+			<string>SCcf</string>
+			<key>FXPreferredViewStyle</key>
+			<string>Nlsv</string>
+			<key>NewWindowTarget</key>
+			<string>PfHm</string>
+			<key>PayloadDisplayName</key>
+			<string>Finder</string>
+			<key>PayloadIdentifier</key>
+			<string>EBD0FC8A-3806-444A-B32C-189520F0F94E</string>
+			<key>PayloadOrganization</key>
+			<string></string>
+			<key>PayloadType</key>
+			<string>com.apple.finder</string>
+			<key>PayloadUUID</key>
+			<string>E71DDB39-D6EB-4C78-8741-B6ED13794B51</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>ShowExternalHardDrivesOnDesktop</key>
+			<true/>
+			<key>ShowHardDrivesOnDesktop</key>
+			<true/>
+			<key>ShowMountedServersOnDesktop</key>
+			<true/>
+			<key>ShowRemovableMediaOnDesktop</key>
+			<true/>
+			<key>_FXSortFoldersFirst</key>
+			<true/>
+			<key>_FXSortFoldersFirstOnDesktop</key>
+			<true/>
+		</dict>
+	</array>
+	<key>PayloadDisplayName</key>
+	<string>macOS - Finder Settings</string>
+	<key>PayloadIdentifier</key>
+	<string>E0D67647-A9EB-470E-A406-858024504370</string>
+	<key>PayloadOrganization</key>
+	<string>wegotoeleven</string>
+	<key>PayloadScope</key>
+	<string>User</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>04F76986-EA23-471E-B3D9-421872F68DA1</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
