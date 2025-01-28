@@ -15,4 +15,3 @@ Match host *,!rd1*,!sha*,!lon*,!wt3*,!ofc* exec "uname | grep -qi 'linux'"
 Host *
   ForwardAgent yes
   AddKeysToAgent yes
-
