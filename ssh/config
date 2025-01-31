@@ -7,12 +7,12 @@ Host drax drax*
 
 Match host *,!rd1*,!sha*,!lon*,!wt3*,!ofc* exec "uname | grep -qi 'darwin'"
   IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-  UseKeychain yes
 
 Match host *,!rd1*,!sha*,!lon*,!wt3*,!ofc* exec "uname | grep -qi 'linux'"
   IdentityAgent ~/.1password/agent.sock
 
-
 Host *
+  IgnoreUnknown UseKeychain
+  UseKeychain yes
   ForwardAgent yes
   AddKeysToAgent yes
