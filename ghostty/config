@@ -2,7 +2,7 @@
 
 # Various
 macos-titlebar-style = tabs
-initial-window = false
+#initial-window = false
 clipboard-read = allow
 clipboard-write = allow
 window-padding-x = 10,10
