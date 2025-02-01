@@ -30,3 +30,6 @@
 #  https://developer.1password.com/docs/ssh/agent/config
 [[ssh-keys]]
 item = "id_ed25519_stephenwb"
+
+[[ssh-keys]]
+item = "id_rsa_stephenwb"

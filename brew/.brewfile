@@ -17,6 +17,8 @@ cask "ghostty"
 cask "tailscale"
 cask "visual-studio-code"
 cask "raycast"
+cask "nikitabobko/tap/aerospace"
+cask "shottr"
 
 # mas install
 mas "1Password for Safari", id: 1569813296

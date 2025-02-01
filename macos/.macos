@@ -1,6 +1,9 @@
 #!/bin/bash
 # https://gist.github.com/DorkNstein/7d1959fb5b242e98373677989b67fc42
 
+# Configure compact tab layout in Safari
+defaults write com.apple.Safari ShowStandaloneTabBar -bool false 
+
 # Set the icon size of Dock items to 48 pixels
 defaults write com.apple.dock tilesize -int 48
 
@@ -39,9 +42,9 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 /usr/libexec/PlistBuddy -c "Set DesktopViewSettings:IconViewSettings:labelOnBottom false" "${HOME}/Library/Preferences/com.apple.finder.plist"
 
 # Enable snap-to-grid for icons on the desktop and in other icon views
-/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" "${HOME}/Library/Preferences/com.apple.finder.plist"
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" "${HOME}/Library/Preferences/com.apple.finder.plist"
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" "${HOME}/Library/Preferences/com.apple.finder.plist"
+/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy kind" "${HOME}/Library/Preferences/com.apple.finder.plist"
+/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy kind" "${HOME}/Library/Preferences/com.apple.finder.plist"
+/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy kind" "${HOME}/Library/Preferences/com.apple.finder.plist"
 
 # Increase the size of icons on the desktop and in other icon views
 /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:iconSize 48" "${HOME}/Library/Preferences/com.apple.finder.plist"
@@ -50,6 +53,8 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
 # Set the text size for icons on the desktop and in other icon views
 /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:textSize 11" "${HOME}/Library/Preferences/com.apple.finder.plist"
+/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:textSize 11" "${HOME}/Library/Preferences/com.apple.finder.plist"
+/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:textSize 11" "${HOME}/Library/Preferences/com.apple.finder.plist"
 /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:ListViewSettings:textSize 11" "${HOME}/Library/Preferences/com.apple.finder.plist"
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:ListViewSettings:textSize 11" "${HOME}/Library/Preferences/com.apple.finder.plist"
 
@@ -85,6 +90,13 @@ defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 
 # Show the ~/Library folder
 chflags nohidden "${HOME}/Library"
+
+# Setup Touch ID for sudo
+sudo tee /etc/pam.d/sudo_local <<EOF
+auth       sufficient     pam_tid.so
+EOF
+sudo chown root:wheel /etc/pam.d/sudo_local
+sudo chmod 444 /etc/pam.d/sudo_local
 
 # Restart things
 for app in \
