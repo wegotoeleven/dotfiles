@@ -7,7 +7,7 @@ Heavily influenced by:
 ## Installation
 
 ```bash
-git clone --recurse-submodules ssh://git@github.com/wegotoeleven/dotfiles ~/.dotfiles
+git clone --recurse-submodules https://github.com/wegotoeleven/dotfiles.git ~/.dotfiles
 ```
 
 ### All
