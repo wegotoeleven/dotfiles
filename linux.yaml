@@ -1,0 +1,24 @@
+- defaults:
+    link:
+      relink: true
+      force: true
+      create: true
+
+- clean:
+    ~/.config:
+      recursive: true
+
+- link:
+
+    # dotfiles
+    ~/.dotfiles: .
+
+    # Shell
+    ~/.zsh: ~/.dotfiles/shell/zsh
+    ~/.zshrc-stephenwb: ~/.dotfiles/shell/zshrc
+    ~/.bash_profile: ~/.dotfiles/shell/bash_profile
+    ~/.bashrc-stephenwb: ~/.dotfiles/shell/bashrc
+    ~/.aliases: ~/.dotfiles/shell/aliases
+
+    # vim
+    ~/.vimrc: ~/.dotfiles/vim/vimrc
