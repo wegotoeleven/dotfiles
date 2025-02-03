@@ -1,9 +1,9 @@
-[submodule "dotfiles_private"]
-	path = dotfiles_private
-	url = ssh://git@github.com/wegotoeleven/dotfiles_private
 [submodule "shell/zsh/themes/pure"]
 	path = shell/zsh/themes/pure
 	url = https://github.com/sindresorhus/pure.git
 [submodule "shell/zsh/themes/wegoshell"]
 	path = shell/zsh/themes/wegoshell
 	url = https://github.com/wegotoeleven/wegoshell.git
+[submodule "private"]
+	path = private
+	url = ssh://git@github.com/wegotoeleven/dotfiles_private

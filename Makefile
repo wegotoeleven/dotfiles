@@ -14,4 +14,4 @@ install: ## Setup apps
 macos: ## Install macos settings
 
 	dotbot -c ./macos.yaml
-	/usr/bin/env bash -c "./macos/macos.sh"
+	/usr/bin/env bash -c "./macos/macos"

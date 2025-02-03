@@ -21,7 +21,7 @@
     ~/.aliases: ~/.dotfiles/shell/aliases
 
     # SSH
-    ~/.ssh/config: ~/.dotfiles/dotfiles_private/ssh/config
+    ~/.ssh/config: ~/.dotfiles/private/ssh/config
 
     # vim
     ~/.vimrc: ~/.dotfiles/vim/vimrc
@@ -33,4 +33,4 @@
     ~/.config/aerospace/aerospace.toml: ~/.dotfiles/aerospace/aerospace.toml
 
     # 1Password
-    ~/.config/1Password/ssh/agent.toml: ~/.dotfiles/1password/agent.toml
+    ~/.config/1Password/ssh/agent.toml: ~/.dotfiles/private/1password/agent.toml
