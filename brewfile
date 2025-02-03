@@ -1,0 +1,27 @@
+cask_args appdir: "/Applications"
+
+# brew tap
+tap "homebrew/bundle"
+
+# brew install
+brew "mas"
+brew "folderify"
+brew "dotbot"
+
+# brew install --cask
+cask "font-sf-pro"
+cask "font-sf-mono"
+cask "font-sf-compact"
+cask "font-new-york"
+cask "appcleaner"
+cask "ghostty"
+cask "tailscale"
+cask "visual-studio-code"
+cask "raycast"
+cask "nikitabobko/tap/aerospace"
+cask "shottr"
+
+# mas install
+mas "1Password for Safari", id: 1569813296
+mas "AdGuard for Safari", id: 1440147259
+mas "Mapper for Safari", id: 1589391989

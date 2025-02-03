@@ -1,0 +1,176 @@
+# This function is used to "change" the Mac address of a chosen interface. Useful for configuring network controllers
+# behind captive portals for devices that don't support them
+changemac() {
+    IFS=$'\n'
+    UI_NUMBER=1
+
+    # Get available interfaces
+    for INTERFACE in $(ifconfig -a | awk '/UP/ {print $1}' | sed 's/://g'); do
+        INTERFACE_ARRAY+=("${INTERFACE}")
+        echo "${UI_NUMBER}) ${INTERFACE}"
+        let "UI_NUMBER += 1"
+    done
+    unset IFS
+
+    # Select an interface
+    read "INTERFACE_ID?Select an interface: "
+    CHOSEN_INTERFACE=${INTERFACE_ARRAY[${INTERFACE_ID}]}
+
+    # Get MAC address or create new MAC
+    NEW_MAC="${1}"
+    if [[ -z "${NEW_MAC}" ]]; then
+        echo "Generating random MAC address..."
+        NEW_MAC=$(openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
+        echo "New MAC address is ${NEW_MAC}"
+    fi
+    echo "Setting ${CHOSEN_INTERFACE} to ${NEW_MAC}..."
+    sudo ifconfig "${CHOSEN_INTERFACE}" ether "${NEW_MAC}"
+}
+
+# This function is used to check the signature of installers or files
+checksign() {
+    # Determine target and check as required
+    if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]; then
+        echo "Package found."
+        pkgutil --check-signature "${1}"
+    else
+        echo "Code found."
+        codesign -dr - --verbose=4 "${1}"
+    fi
+}
+
+# This function is used to check all devices on a specific subnet. Only works on the 4th octet.
+checksubnet() {
+    if [[ -z "${1}" ]]; then
+        echo "First 3 IP subnet octets not supplied. Bailing..."
+        return 1
+    fi
+    for IP_OCTET_4 in $(seq 1 254); do
+        if ping -c 1 $1.${IP_OCTET_4} -t 2 >/dev/null 2>&1; then
+            echo "$1.$IP_OCTET_4 UP"
+        fi
+    done
+}
+
+# This function cleans a folder and all sub-folders of .DS_Store files
+cleandsstore() {
+    IFS=$'\n'
+    for DS_STORE_FILE in $(find . -name .DS_Store); do
+        rm ${DS_STORE_FILE}
+    done
+    unset IFS
+}
+
+# This function is used to output the date and time in ISO format
+datetimeiso() {
+    date '+%Y-%m-%d-%H-%M-%S'
+}
+
+# This function is used to decrypt and encrypted string. Salt and passphrase to convert it to plain text. $2 is the
+# salt, $3 is the passphrase
+decryptString() {
+    echo "${1}" | openssl enc -aes256 -d -a -A -md md5 -S "${2}" -k "${3}"
+}
+
+# This function is used to encrypt a string. Salt and passphrase to encrypt it; $2 is the salt, $3 is the passphrase
+encryptString() {
+    echo "${1}" | openssl enc -aes256 -a -A -md md5 -S "${2}" -k "${3}"
+}
+
+# This function is used to expand a URL
+expandurl() {
+    curl -sIL $1 2>&1 | awk '/^Location/ {print $2}' | tail -n1
+}
+
+# This function is used to pull out a certificate from a mobile config file
+exportcert() {
+    CERTIFICATE=$(basename "${1}")
+    echo "cat /plist/dict/array/dict[1]/data/text()" | xmllint --nocdata --shell "${1}" | sed '1d;$d' | base64 -D >"$(dirname "$1")/exported-${CERTIFICATE}.pem"
+}
+
+# This function is used to determine the UTI of a file
+finduti() {
+    mdls -name kMDItemContentType "${1}"
+}
+
+# This function is used to generate a public key from a private key
+generatepubkey() {
+    ssh-keygen -y -f "${1}" >"${1}".pub
+}
+
+# This function creates DMG from a folder
+makedmg() {
+    # Determine if the content is a folder, exit if not
+    if [[ ! -d "${1}" ]]; then
+        echo "Supplied content is not a folder. Exiting..."
+        return 1
+    else
+        DMG_NAME=$(basename "${1}")
+        DIRECTORY_NAME=$(dirname "${1}")
+        echo "Creating dmg for ${DMG_NAME}..."
+        hdiutil create -volname "${DMG_NAME}" -srcfolder "${1}" -ov -format UDZO "${DIRECTORY_NAME}"/"${DMG_NAME}".dmg
+    fi
+}
+
+# This function is used to sign an installer or file
+sign() {
+    IFS=$'\n'
+    UI_NUMBER=1
+
+    # Get available certificates
+    for FOUND_CERT in $(security find-certificate -a -c Develop | awk -F '=' '/"alis"/ {print $2}' | awk '/\(.*\)/ { print }' | sed 's/"//g'); do
+        CERT_ARRAY+=("${FOUND_CERT}")
+        echo "${UI_NUMBER}) ${FOUND_CERT}"
+        let "UI_NUMBER += 1"
+    done
+    unset IFS
+
+    # Select a certificate
+    if [[ -z ${FOUND_CERT} ]]; then
+        echo "No certificates available to sign. Exiting..."
+        return 1
+    else
+        echo "Select a certificate: "
+        read CHOSEN_UI_NUMBER
+        CHOSEN_CERT=${CERT_ARRAY[${CHOSEN_UI_NUMBER}]}
+    fi
+
+    # Determine signing target and sign as required
+    FILE_NAME=$(basename "${1}")
+    if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]; then
+        echo "Signing package..."
+        productsign --sign "${CHOSEN_CERT}" "${1}" "$(dirname "${1}")/Signed-${FILE_NAME}"
+    else
+        echo "Signing code..."
+        security cms -S -N "${CHOSEN_CERT}" -i "${1}" -o "$(dirname "${1}")/Signed-${FILE_NAME}"
+    fi
+}
+
+# This function mimics Linux "tree" functionality
+tree() {
+    PATH_TO_CHECK="${1}"
+    if [[ -z "${PATH_TO_CHECK}" ]]; then
+        PATH_TO_CHECK=.
+    fi
+    find "${PATH_TO_CHECK}" -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
+}
+
+# This function is used to unsign an installer or file
+unsign() {
+    # Determine target and un-sign as required
+    FILE_NAME=$(basename "${1}")
+    if [[ "${1}" =~ .pkg || "${1}" =~ .mpkg ]]; then
+        echo "Package found."
+        pkgutil --expand "${1}" /tmp/expand.pkg
+        pkgutil --flatten /tmp/expand.pkg "$(dirname "$1")/Unsigned-${FILE_NAME}"
+    else
+        echo "Code found."
+        openssl smime -inform DER -verify -in "${1}" -noverify -out "$(dirname "$1")/Unsigned-${FILE_NAME}"
+        plutil -convert xml1 "$(dirname "$1")/Unsigned-${FILE_NAME}"
+    fi
+}
+
+# This function is used to find the public IP address
+whatismyip() {
+    dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'
+}

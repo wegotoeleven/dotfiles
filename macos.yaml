@@ -1,0 +1,33 @@
+- defaults:
+    link:
+      relink: true
+      force: true
+      create: true
+
+- clean:
+    ~/.config:
+      recursive: true
+
+- link:
+
+    # dotfiles
+    ~/.dotfiles: .
+
+    # Shell
+    ~/.zsh: ~/.dotfiles/shell/zsh
+    ~/.zshrc: ~/.dotfiles/shell/zshrc
+    ~/.bash_profile: ~/.dotfiles/shell/bash_profile
+    ~/.bashrc: ~/.dotfiles/shell/bashrc
+    ~/.aliases: ~/.dotfiles/shell/aliases
+
+    # vim
+    ~/.vimrc: ~/.dotfiles/vim/vimrc
+
+    # Ghostty
+    ~/.config/ghostty/config: ~/.dotfiles/ghostty/config
+
+    # Aerospace
+    ~/.config/aerospace/aerospace.toml: ~/.dotfiles/aerospace/aerospace.toml
+
+    # 1Password
+    ~/.config/1Password/ssh/agent.toml: ~/.dotfiles/1password/agent.toml
