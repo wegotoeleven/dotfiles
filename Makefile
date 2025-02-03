@@ -11,7 +11,12 @@ install: ## Setup apps
 	[[ $(OS) == "Darwin" ]] && brew bundle --file ./brewfile || sudo apt-get install dotbot
 
 .PHONY: macos
-macos: ## Install macos settings
+macos: ## Install macOS settings
 
 	dotbot -c ./macos.yaml
 	/usr/bin/env bash -c "./macos/macos"
+
+.PHONY: macos
+linux: ## Install Linux settings
+
+	dotbot -c ./linux.yaml
