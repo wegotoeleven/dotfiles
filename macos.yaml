@@ -20,6 +20,9 @@
     ~/.bashrc: ~/.dotfiles/shell/bashrc
     ~/.aliases: ~/.dotfiles/shell/aliases
 
+    # SSH
+    ~/.ssh/config: ~/.dotfiles/dotfiles_private/ssh/config
+
     # vim
     ~/.vimrc: ~/.dotfiles/vim/vimrc
 

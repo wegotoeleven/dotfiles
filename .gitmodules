@@ -4,3 +4,6 @@
 [submodule "shell/zsh/themes/pure"]
 	path = shell/zsh/themes/pure
 	url = https://github.com/sindresorhus/pure.git
+[submodule "shell/zsh/themes/wegoshell"]
+	path = shell/zsh/themes/wegoshell
+	url = https://github.com/wegotoeleven/wegoshell.git
