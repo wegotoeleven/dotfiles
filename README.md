@@ -10,18 +10,18 @@ Heavily influenced by:
 git clone --recurse-submodules ssh://git@github.com/wegotoeleven/dotfiles ~/.dotfiles
 ```
 
-## All
+### All
 ```bash
 make install
 ```
 
-## Ubuntu
+### Ubuntu
 
 ```bash
 make ubuntu
 ```
 
-## macOS
+### macOS
 
 ```bash
 make macos
