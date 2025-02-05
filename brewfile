@@ -2,6 +2,8 @@ cask_args appdir: "/Applications"
 
 # brew tap
 tap "homebrew/bundle"
+tap "epk/epk"
+tap "nikitabobko/aerospace"
 
 # brew install
 brew "mas"
@@ -11,6 +13,7 @@ brew "dotbot"
 # brew install --cask
 cask "font-sf-pro"
 cask "font-sf-mono"
+cask "font-sf-mono-nerd-font"
 cask "font-sf-compact"
 cask "font-new-york"
 cask "appcleaner"
@@ -18,7 +21,7 @@ cask "ghostty"
 cask "tailscale"
 cask "visual-studio-code"
 cask "raycast"
-cask "nikitabobko/tap/aerospace"
+cask "aerospace"
 cask "shottr"
 
 # mas install
