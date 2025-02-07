@@ -23,6 +23,7 @@ cask "visual-studio-code"
 cask "raycast"
 cask "aerospace"
 cask "shottr"
+cask "1password"
 
 # mas install
 mas "1Password for Safari", id: 1569813296
