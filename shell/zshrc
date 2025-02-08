@@ -1,7 +1,7 @@
 ##### Environment Variables
 
 # Add custom binaries to the PATH
-path+=(${HOME}/.binaries)
+path=(${HOME}/.binaries /opt/homebrew/bin $path)
 
 # Enable colored output
 export CLICOLOR=1

@@ -121,3 +121,10 @@ for app in \
 	killall "${app}" &> /dev/null
 done
 
+# Other apps
+defaults write cc.ffitch.shottr alwaysOnTop -bool true
+defaults write cc.ffitch.shottr areaCaptureMode -string "editor"
+defaults write cc.ffitch.shottr copyOnEsc -bool false
+defaults write cc.ffitch.shottr defaultFolder -string "~/Desktop"
+defaults write cc.ffitch.shottr notificationType -string none
+defaults write cc.ffitch.shottr saveOnEsc -bool true
