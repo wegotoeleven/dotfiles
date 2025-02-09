@@ -7,7 +7,7 @@ start-at-login = true
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
-accordion-padding = 100
+accordion-padding = 200
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
 # See https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
@@ -67,7 +67,7 @@ ctrl-b = 'workspace B'
 # ctrl-f = 'workspace F'
 # ctrl-g = 'workspace G'
 # ctrl-i = 'workspace I'
-# ctrl-m = 'workspace M'
+ctrl-m = 'workspace M'
 # ctrl-n = 'workspace N'
 # ctrl-o = 'workspace O'
 # ctrl-p = 'workspace P'
@@ -99,7 +99,7 @@ ctrl-shift-b = ['move-node-to-workspace B', 'workspace B']
 # ctrl-shift-f = ['move-node-to-workspace F', 'workspace F']
 # ctrl-shift-g = ['move-node-to-workspace G', 'workspace G']
 # ctrl-shift-i = ['move-node-to-workspace I', 'workspace I']
-# ctrl-shift-m = ['move-node-to-workspace M', 'workspace M']
+ctrl-shift-m = ['move-node-to-workspace M', 'workspace M']
 # ctrl-shift-n = ['move-node-to-workspace N', 'workspace N']
 # ctrl-shift-o = ['move-node-to-workspace O', 'workspace O']
 # ctrl-shift-p = ['move-node-to-workspace P', 'workspace P']
@@ -164,6 +164,34 @@ run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'com.apple.mail'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Home'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.jamfsoftware.selfservice.mac'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.configurator.ui'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.PairedDevices'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Notes'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.reminders'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ScreenSharing'
 run = 'layout floating'
 
 [mode.service.binding]
