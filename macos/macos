@@ -1,7 +1,77 @@
 #!/usr/bin/env bash
 
-# Configure compact tab layout in Safari
-defaults write com.apple.Safari ShowStandaloneTabBar -bool false 
+# --------- #
+# Functions #
+# --------- #
+
+# This function is an if statement that is used with Plistbuddy to check if a key exists in a plist file, and depending on the output, use `set` or add
+plistbuddy() {
+	local PLIST="${1}"
+	local KEY="${2}"
+	local TYPE="${3}"
+	local VALUE="${4}"
+	if /usr/libexec/PlistBuddy -c "Print ${KEY}" "${PLIST}" >/dev/null 2>&1; then
+		/usr/libexec/PlistBuddy -c "Set ${KEY} ${VALUE}" "${PLIST}"
+	else
+		/usr/libexec/PlistBuddy -c "Add ${KEY} ${TYPE} ${VALUE}" "${PLIST}"
+	fi
+}
+
+# ------ #
+# Finder #
+# ------ #
+
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "DesktopViewSettings:GroupBy" "string" "Kind"
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "DesktopViewSettings:IconViewSettings:iconSize" "integer" 48
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "DesktopViewSettings:IconViewSettings:labelOnBottom" "bool" false
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "DesktopViewSettings:IconViewSettings:showItemInfo" "bool" true
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "DesktopViewSettings:IconViewSettings:textSize" "integer" 11
+
+# FileKit settings (i.e Save dialogs)
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "FK_StandardViewSettings:IconViewSettings:arrangeBy" "string" "Kind"
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "FK_StandardViewSettings:IconViewSettings:iconSize" "integer" 48
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "FK_StandardViewSettings:IconViewSettings:textSize" "integer" 11
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "FK_StandardViewSettings:ExtendedListViewSettingsV2:calculateAllSizes" "bool" true
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "FK_StandardViewSettings:ExtendedListViewSettingsV2:sortColumn" "string" "Kind"
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "FK_StandardViewSettings:ExtendedListViewSettingsV2:textSize" "integer" 11
+
+# Finder view settings
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:IconViewSettings:arrangeBy" "string" "Kind"
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:IconViewSettings:iconSize" "integer" 48
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:IconViewSettings:textSize" "integer" 11
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:ExtendedListViewSettingsV2:calculateAllSizes" "bool" true
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:ExtendedListViewSettingsV2:sortColumn" "string" "Kind"
+plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:ExtendedListViewSettingsV2:textSize" "integer" 11
+
+# Show items on the desktop
+defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
+defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+
+# Set the new window target to the home directory
+defaults write com.apple.finder NewWindowTarget -string "PfHm"
+
+# Spawn Finder in windows instead of tabs
+defaults write com.apple.finder FinderSpawnTab -bool false
+
+# Set the search scope to the current folder
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+
+# Disable Finder recent tags
+defaults write com.apple.finder ShowRecentTags -bool false
+
+# Set the sort settings to put folders first
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
+defaults write com.apple.finder _FXSortFoldersFirstOnDesktop -bool true
+
+# Use list view in all Finder windows by default
+# Four-letter codes for the other view modes: `icnv`, `clmv`, `glyv`
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+
+# ---- #
+# Dock #
+# ---- #
 
 # Set the icon size of Dock items to 48 pixels
 defaults write com.apple.dock tilesize -int 48
@@ -24,8 +94,23 @@ defaults write com.apple.dock expose-group-apps -bool true
 # Disable mission control with window drag
 defaults write com.apple.dock enterMissionControlByTopWindowDrag -bool false
 
+# --------------- #
+# Mission Control #
+# --------------- #
+
 # Disable Displays have separate spaces
 defaults write com.apple.spaces spans-displays -bool true
+
+# ------ #
+# Safari #
+# ------ #
+
+# Configure compact tab layout in Safari
+defaults write com.apple.Safari ShowStandaloneTabBar -bool false 
+
+# ---- #
+# Misc #
+# ---- #
 
 # Ensure save dialogues expand by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
@@ -47,84 +132,41 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Enable ctrl-cmd window dragging
 defaults write NSGlobalDomain NSWindowShouldDragOnGesture -bool true
 
-# Show item info near icons on the desktop and in other icon views
-/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:showItemInfo true" "${HOME}/Library/Preferences/com.apple.finder.plist"
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:showItemInfo true" "${HOME}/Library/Preferences/com.apple.finder.plist"
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:showItemInfo true" "${HOME}/Library/Preferences/com.apple.finder.plist"
-
-# Show item info to the right of the icons on the desktop
-/usr/libexec/PlistBuddy -c "Set DesktopViewSettings:IconViewSettings:labelOnBottom false" "${HOME}/Library/Preferences/com.apple.finder.plist"
-
-# Enable snap-to-grid for icons on the desktop and in other icon views
-/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy kind" "${HOME}/Library/Preferences/com.apple.finder.plist"
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy kind" "${HOME}/Library/Preferences/com.apple.finder.plist"
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy kind" "${HOME}/Library/Preferences/com.apple.finder.plist"
-
-# Increase the size of icons on the desktop and in other icon views
-/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:iconSize 48" "${HOME}/Library/Preferences/com.apple.finder.plist"
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:iconSize 48" "${HOME}/Library/Preferences/com.apple.finder.plist"
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:iconSize 48" "${HOME}/Library/Preferences/com.apple.finder.plist"
-
-# Set the text size for icons on the desktop and in other icon views
-/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:textSize 11" "${HOME}/Library/Preferences/com.apple.finder.plist"
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:textSize 11" "${HOME}/Library/Preferences/com.apple.finder.plist"
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:textSize 11" "${HOME}/Library/Preferences/com.apple.finder.plist"
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:ListViewSettings:textSize 11" "${HOME}/Library/Preferences/com.apple.finder.plist"
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:ListViewSettings:textSize 11" "${HOME}/Library/Preferences/com.apple.finder.plist"
-
-# Set the sort method for icons on the desktop and in other icon views
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:ListViewSettings:sortColumn kind" "${HOME}/Library/Preferences/com.apple.finder.plist"
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:ListViewSettings:sortColumn kind" "${HOME}/Library/Preferences/com.apple.finder.plist"
-
-# Show items on the desktop
-defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
-defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
-
-# Set the new window target to the home directory
-defaults write com.apple.finder NewWindowTarget -string "PfHm"
-
-# Spawn Finder in windows instead of tabs
-defaults write com.apple.finder FinderSpawnTab -bool false
-
-# Set the search scope to the current folder
-defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
-
-# Set the sort settings to put folders first
-defaults write com.apple.finder _FXSortFoldersFirst -bool true
-defaults write com.apple.finder _FXSortFoldersFirstOnDesktop -bool true
-
-# Disable Finder recent tags
-defaults write com.apple.finder ShowRecentTags -bool false
-
-# Use list view in all Finder windows by default
-# Four-letter codes for the other view modes: `icnv`, `clmv`, `glyv`
-defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
-
-# Show the ~/Library folder
-chflags nohidden "${HOME}/Library"
-
-# Setup Touch ID for sudo
+# Setup sudo to use Touch ID
 sudo tee /etc/pam.d/sudo_local <<EOF
 auth       sufficient     pam_tid.so
 EOF
 sudo chown root:wheel /etc/pam.d/sudo_local
 sudo chmod 444 /etc/pam.d/sudo_local
 
-# Restart things
-for app in \
-	"cfprefsd" \
-	"SystemUIServer" \
-	"Dock" \
-	"Finder"; do
-	killall "${app}" &> /dev/null
-done
+# ---------- #
+# Other apps #
+# ---------- #
 
-# Other apps
+# Shottr
 defaults write cc.ffitch.shottr alwaysOnTop -bool true
 defaults write cc.ffitch.shottr areaCaptureMode -string "editor"
 defaults write cc.ffitch.shottr copyOnEsc -bool false
 defaults write cc.ffitch.shottr defaultFolder -string "~/Desktop"
 defaults write cc.ffitch.shottr notificationType -string none
 defaults write cc.ffitch.shottr saveOnEsc -bool true
+
+# ------------ #
+# Final things #
+# ------------ #
+
+# Show the ~/Library folder
+chflags nohidden "${HOME}/Library"
+
+# Restart all apps
+for app in \
+	"cfprefsd" \
+	"SystemUIServer" \
+	"Dock" \
+	"Finder" \
+	"Shottr"; do
+	killall "${app}" &> /dev/null
+done
+
+# Delete all .DS_Store files to reset Finder views to the previously set defaults
+find ~/ -type f -name ".DS_Store" -delete
