@@ -38,4 +38,9 @@ keybind = super+shift+l=goto_split:right
 keybind = super+shift+j=goto_split:bottom
 keybind = super+shift+h=goto_split:left
 keybind = super+shift+k=goto_split:top
+keybind = super+shift+m=write_scrollback_file:open
 macos-titlebar-style = tabs
+macos-icon = custom-style
+macos-icon-frame = plastic
+macos-icon-ghost-color = #FFFFFF
+macos-icon-screen-color = #111111
