@@ -7,3 +7,6 @@
 [submodule "private"]
 	path = private
 	url = ssh://git@github.com/wegotoeleven/dotfiles_private
+[submodule "dotbot"]
+	path = dotbot
+	url = https://github.com/anishathalye/dotbot
