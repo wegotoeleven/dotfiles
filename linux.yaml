@@ -10,12 +10,24 @@
 
 - link:
 
+    # dotfiles
+    ~/.dotfiles: .
+
     # Shell
     ~/.zsh: ~/.dotfiles/shell/zsh
-    ~/.zshrc-stephenwb: ~/.dotfiles/shell/zshrc
+    ~/.zshrc: ~/.dotfiles/shell/zshrc
     ~/.bash_profile: ~/.dotfiles/shell/bash_profile
-    ~/.bashrc-stephenwb: ~/.dotfiles/shell/bashrc
+    ~/.bashrc: ~/.dotfiles/shell/bashrc
     ~/.aliases: ~/.dotfiles/shell/aliases
+
+    # SSH
+    ~/.ssh/config: ~/.dotfiles/private/ssh/config
 
     # vim
     ~/.vimrc: ~/.dotfiles/vim/vimrc
+
+    # Ghostty
+    ~/.config/ghostty/config: ~/.dotfiles/ghostty/config
+
+    # 1Password
+    ~/.config/1Password/ssh/agent.toml: ~/.dotfiles/private/1password/agent.toml
