@@ -2,13 +2,10 @@ cask_args appdir: "/Applications"
 
 # brew tap
 tap "homebrew/bundle"
-tap "epk/epk"
 tap "nikitabobko/aerospace"
 
 # brew install
 brew "mas"
-brew "folderify"
-brew "dotbot"
 
 # brew install --cask
 cask "font-sf-pro"

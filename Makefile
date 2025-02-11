@@ -35,23 +35,21 @@ install: ## Setup apps
 		brew bundle --file=./brewfile; \
 	else \
 		echo "Detected Linux or unsupported OS."; \
-		echo "Installing dotbot via apt-get..."; \
-		sudo apt-get install -y dotbot; \
 	fi
 	@echo "Installation process complete."
 
 .PHONY: macos
 macos: ## Install macOS settings
-	@echo "Applying macOS settings..."
-	@echo "Running Dotbot for macOS..."
-	@dotbot -c ./macos.yaml
+	@echo "Configuring macOS dotfiles..."
+	@git -C dotbot submodule sync --quiet --recursive
+	@git submodule update --init --recursive dotbot
+	@./dotbot/bin/dotbot -c ./macos.yaml
 	@echo "Applying macOS system settings..."
 	@/usr/bin/env bash -c "./macos/macos"
 	@echo "macOS setup complete."
 
 .PHONY: linux
 linux: ## Install Linux settings
-	@echo "Applying Linux settings..."
-	@echo "Running Dotbot for Linux..."
-	@dotbot -c ./linux.yaml
+	@echo "Configuring Linux dotfiles..."
+	@./dotbot/bin/dotbot -c ./linux.yaml
 	@echo "Linux setup complete."
