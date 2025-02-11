@@ -30,7 +30,7 @@ palette = 12=#AE81FF
 palette = 13=#FD971F
 palette = 14=#66D9EF
 palette = 15=#FDFFF1
-font-size = 15
+font-size = 13
 font-family = "SFMono Nerd Font"
 window-title-font-family = "SFMono Nerd Font"
 adjust-cell-width = -1
