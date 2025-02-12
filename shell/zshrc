@@ -54,6 +54,7 @@ set -o vi
 bindkey "${terminfo[kcuu1]}" up-line-or-search      # Search history with up arrow
 bindkey "${terminfo[kcud1]}" down-line-or-search    # Search history with down arrow
 bindkey "^R" history-incremental-search-backward    # Search history with Ctrl+R
+bindkey "^F" history-incremental-search-forward     # Search history with Ctrl+F
 
 ##### Additional Configurations
 
