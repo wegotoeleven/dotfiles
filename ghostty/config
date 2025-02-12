@@ -34,10 +34,10 @@ font-size = 13
 font-family = "SFMono Nerd Font"
 window-title-font-family = "SFMono Nerd Font"
 adjust-cell-width = -1
-keybind = super+shift+l=goto_split:right
-keybind = super+shift+j=goto_split:bottom
 keybind = super+shift+h=goto_split:left
+keybind = super+shift+j=goto_split:bottom
 keybind = super+shift+k=goto_split:top
+keybind = super+shift+l=goto_split:right
 keybind = super+shift+m=write_scrollback_file:open
 macos-titlebar-style = tabs
 macos-icon = custom-style
