@@ -29,5 +29,8 @@
     # Ghostty
     ~/.config/ghostty/config: ~/.dotfiles/ghostty/config
 
+    # i3
+    ~/.config/i3/config: ~/.dotfiles/i3/config
+
     # 1Password
     ~/.config/1Password/ssh/agent.toml: ~/.dotfiles/private/1password/agent.toml
