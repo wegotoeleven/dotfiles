@@ -112,6 +112,9 @@ defaults write com.apple.Safari ShowStandaloneTabBar -bool false
 # Misc #
 # ---- #
 
+# Hide menu bar
+defaults write NSGlobalDomain _HIHideMenuBar -bool true
+
 # Ensure save dialogues expand by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
