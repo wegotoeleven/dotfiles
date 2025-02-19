@@ -32,7 +32,7 @@ install: ## Setup apps
 			fi; \
 		fi; \
 		echo "Running Brew Bundle..."; \
-		brew bundle --file=./brewfile; \
+		brew bundle --file=./macos/brewfile; \
 	else \
 		echo "Detected Linux or unsupported OS."; \
 	fi
@@ -43,13 +43,13 @@ macos: ## Install macOS settings
 	@echo "Configuring macOS dotfiles..."
 	@git -C dotbot submodule sync --quiet --recursive
 	@git submodule update --init --recursive dotbot
-	@./dotbot/bin/dotbot -c ./macos.yaml
+	@./dotbot/bin/dotbot -c ./macos/dotbot.yaml
 	@echo "Applying macOS system settings..."
-	@/usr/bin/env bash -c "./macos/macos"
+	@/usr/bin/env bash -c "./macos/config.sh"
 	@echo "macOS setup complete."
 
 .PHONY: linux
 linux: ## Install Linux settings
 	@echo "Configuring Linux dotfiles..."
-	@./dotbot/bin/dotbot -c ./linux.yaml
+	@./dotbot/bin/dotbot -c ./linux/dotbot.yaml
 	@echo "Linux setup complete."

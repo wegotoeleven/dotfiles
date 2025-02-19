@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# This script is used with Aerospace to open an app if it's not already open, and focus on it if it is.
+
+# aerospace/focus_app.sh
+
 APP_ID=$1
 APP_NAME=$2
 

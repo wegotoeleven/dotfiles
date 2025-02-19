@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# macos/config.sh
+
 # --------- #
 # Functions #
 # --------- #
@@ -43,11 +45,12 @@ plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSet
 plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:ExtendedListViewSettingsV2:sortColumn" "string" "Kind"
 plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:ExtendedListViewSettingsV2:textSize" "integer" 11
 
-# Show items on the desktop
+# Show items on the desktop... but then hide it :)
 defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
 defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
 defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
 defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+defaults write com.apple.finder CreateDesktop -bool false
 
 # Set the new window target to the home directory
 defaults write com.apple.finder NewWindowTarget -string "PfHm"

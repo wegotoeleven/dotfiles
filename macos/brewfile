@@ -2,10 +2,13 @@ cask_args appdir: "/Applications"
 
 # brew tap
 tap "homebrew/bundle"
-tap "nikitabobko/aerospace"
+tap "nikitabobko/tap"
+tap "FelixKratz/formulae"
 
 # brew install
 brew "mas"
+brew "sketchybar"
+brew "borders"
 
 # brew install --cask
 cask "font-sf-pro"
