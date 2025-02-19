@@ -26,8 +26,5 @@
     # vim
     ~/.vimrc: ~/.dotfiles/vim/vimrc
 
-    # Ghostty
-    ~/.config/ghostty/config: ~/.dotfiles/ghostty/config
-
     # 1Password
     ~/.config/1Password/ssh/agent.toml: ~/.dotfiles/private/1password/agent.toml
