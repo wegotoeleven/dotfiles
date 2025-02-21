@@ -43,27 +43,27 @@ outer.right = 10
 [mode.main.binding]
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-ctrl-cmd-t = [
+shift-ctrl-t = [
     'exec-and-forget ~/.config/aerospace/plugins/focus_app.sh com.mitchellh.ghostty Ghostty',
 ]
-ctrl-cmd-f = [
+shift-ctrl-f = [
     'exec-and-forget ~/.config/aerospace/plugins/focus_app.sh com.apple.finder Finder',
 ]
-ctrl-cmd-n = [
+shift-ctrl-n = [
     'exec-and-forget ~/.config/aerospace/plugins/focus_app.sh com.apple.notes Notes',
 ]
-ctrl-cmd-z = [
+shift-ctrl-z = [
     'exec-and-forget ~/.config/aerospace/plugins/focus_app.sh us.zoom.xos zoom.us',
 ]
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
-alt-shift-slash = 'layout tiles horizontal vertical'
-alt-shift-comma = 'layout accordion horizontal vertical'
-alt-shift-f = 'layout floating tiling'
+shift-alt-slash = 'layout tiles horizontal vertical'
+shift-alt-comma = 'layout accordion horizontal vertical'
+shift-alt-f = 'layout floating tiling'
 # See: https://nikitabobko.github.io/AeroSpace/commands#focus
-alt-shift-h = 'focus left'
-alt-shift-j = 'focus down'
-alt-shift-k = 'focus up'
-alt-shift-l = 'focus right'
+shift-alt-h = 'focus left'
+shift-alt-j = 'focus down'
+shift-alt-k = 'focus up'
+shift-alt-l = 'focus right'
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
 # This is set this way to be consistent with the default keybinding for moving a window
 # with the mouse in macOS
@@ -72,8 +72,8 @@ ctrl-cmd-j = 'move down'
 ctrl-cmd-k = 'move up'
 ctrl-cmd-l = 'move right'
 # See: https://nikitabobko.github.io/AeroSpace/commands#resize◊
-alt-shift-minus = 'resize smart -50'
-alt-shift-equal = 'resize smart +50'
+shift-alt-minus = 'resize smart -50'
+shift-alt-equal = 'resize smart +50'
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
@@ -107,43 +107,43 @@ alt-v = 'workspace V'
 # alt-y = 'workspace Y'
 # alt-z = 'workspace Z'
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
-alt-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
-alt-shift-2 = ['move-node-to-workspace 2', 'workspace 2']
-# alt-shift-3 = ['move-node-to-workspace 3']
-# alt-shift-4 = ['move-node-to-workspace 4']
-# alt-shift-5 = ['move-node-to-workspace 5']
-# alt-shift-6 = ['move-node-to-workspace 6']
-# alt-shift-7 = ['move-node-to-workspace 7']
-# alt-shift-8 = ['move-node-to-workspace 8']
-# alt-shift-9 = ['move-node-to-workspace 9']
-# alt-shift-a = ['move-node-to-workspace A']
-alt-shift-b = ['move-node-to-workspace B', 'workspace B']
-# alt-shift-c = ['move-node-to-workspace C']
-# alt-shift-d = ['move-node-to-workspace D']
-# alt-shift-e = ['move-node-to-workspace E']
-# alt-shift-f = ['move-node-to-workspace F']
-# alt-shift-g = ['move-node-to-workspace G']
-# alt-shift-i = ['move-node-to-workspace I']
-alt-shift-m = ['move-node-to-workspace M', 'workspace M']
-# alt-shift-n = ['move-node-to-workspace N']
-# alt-shift-o = ['move-node-to-workspace O']
-# alt-shift-p = ['move-node-to-workspace P']
-# alt-shift-q = ['move-node-to-workspace Q']
-# alt-shift-r = ['move-node-to-workspace R']
-alt-shift-s = ['move-node-to-workspace S', 'workspace S']
-# alt-shift-t = ['move-node-to-workspace T']
-# alt-shift-u = ['move-node-to-workspace U']
-alt-shift-v = ['move-node-to-workspace V', 'workspace V']
-# alt-shift-w = ['move-node-to-workspace W']
-# alt-shift-x = ['move-node-to-workspace X']
-# alt-shift-y = ['move-node-to-workspace Y']
-# alt-shift-z = ['move-node-to-workspace Z']
+shift-alt-1 = ['move-node-to-workspace 1', 'workspace 1']
+shift-alt-2 = ['move-node-to-workspace 2', 'workspace 2']
+# shift-alt-3 = ['move-node-to-workspace 3']
+# shift-alt-4 = ['move-node-to-workspace 4']
+# shift-alt-5 = ['move-node-to-workspace 5']
+# shift-alt-6 = ['move-node-to-workspace 6']
+# shift-alt-7 = ['move-node-to-workspace 7']
+# shift-alt-8 = ['move-node-to-workspace 8']
+# shift-alt-9 = ['move-node-to-workspace 9']
+# shift-alt-a = ['move-node-to-workspace A']
+shift-alt-b = ['move-node-to-workspace B', 'workspace B']
+# shift-alt-c = ['move-node-to-workspace C']
+# shift-alt-d = ['move-node-to-workspace D']
+# shift-alt-e = ['move-node-to-workspace E']
+# shift-alt-f = ['move-node-to-workspace F']
+# shift-alt-g = ['move-node-to-workspace G']
+# shift-alt-i = ['move-node-to-workspace I']
+shift-alt-m = ['move-node-to-workspace M', 'workspace M']
+# shift-alt-n = ['move-node-to-workspace N']
+# shift-alt-o = ['move-node-to-workspace O']
+# shift-alt-p = ['move-node-to-workspace P']
+# shift-alt-q = ['move-node-to-workspace Q']
+# shift-alt-r = ['move-node-to-workspace R']
+shift-alt-s = ['move-node-to-workspace S', 'workspace S']
+# shift-alt-t = ['move-node-to-workspace T']
+# shift-alt-u = ['move-node-to-workspace U']
+shift-alt-v = ['move-node-to-workspace V', 'workspace V']
+# shift-alt-w = ['move-node-to-workspace W']
+# shift-alt-x = ['move-node-to-workspace X']
+# shift-alt-y = ['move-node-to-workspace Y']
+# shift-alt-z = ['move-node-to-workspace Z']
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 # alt-tab = 'workspace-back-and-forth'
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
-# alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+# shift-alt-tab = 'move-workspace-to-monitor --wrap-around next'
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
-alt-shift-semicolon = 'mode service'
+shift-alt-semicolon = 'mode service'
 
 # Callbacks
 # See: https://nikitabobko.github.io/AeroSpace/guide#on-window-detected-callback
@@ -231,10 +231,10 @@ r = ['flatten-workspace-tree', 'mode main']                # reset layout
 backspace = ['close-all-windows-but-current', 'mode main']
 # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 # s = ['layout sticky tiling', 'mode main']
-# alt-shift-h = ['join-with left', 'mode main']
-# alt-shift-j = ['join-with down', 'mode main']
-# alt-shift-k = ['join-with up', 'mode main']
-# alt-shift-l = ['join-with right', 'mode main']
+# shift-alt-h = ['join-with left', 'mode main']
+# shift-alt-j = ['join-with down', 'mode main']
+# shift-alt-k = ['join-with up', 'mode main']
+# shift-alt-l = ['join-with right', 'mode main']
 # down = 'volume down'
 # up = 'volume up'
 # shift-down = ['volume set 0', 'mode main']
