@@ -36,6 +36,7 @@
     # sketchybar and borders
     ~/.config/sketchybar/sketchybarrc: ~/.dotfiles/sketchybar/sketchybarrc
     ~/.config/sketchybar/plugins/aerospace.sh: ~/.dotfiles/sketchybar/aerospace.sh
+    ~/.config/sketchybar/plugins/calendar.sh: ~/.dotfiles/sketchybar/calendar.sh
     ~/.config/sketchybar/plugins/front_app.sh: ~/.dotfiles/sketchybar/front_app.sh
     ~/.config/borders/bordersrc: ~/.dotfiles/borders/bordersrc
 

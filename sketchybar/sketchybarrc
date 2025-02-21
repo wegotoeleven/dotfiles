@@ -51,6 +51,10 @@ sketchybar --add item chevron left \
 
 sketchybar --add event aerospace_workspace_change
 
+sketchybar --add item calendar right \
+           --set calendar update_freq=10       \
+                          script="$CONFIG_DIR/plugins/calendar.sh"
+
 for sid in $(aerospace list-workspaces --all | sort -r); do
     sketchybar --add item space.$sid right \
         --subscribe space.$sid aerospace_workspace_change \
