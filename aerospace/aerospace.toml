@@ -43,18 +43,18 @@ outer.right = 10
 [mode.main.binding]
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-shift-ctrl-t = [
-    'exec-and-forget ~/.config/aerospace/plugins/focus_app.sh com.mitchellh.ghostty Ghostty',
-]
-shift-ctrl-f = [
-    'exec-and-forget ~/.config/aerospace/plugins/focus_app.sh com.apple.finder Finder',
-]
-shift-ctrl-n = [
-    'exec-and-forget ~/.config/aerospace/plugins/focus_app.sh com.apple.notes Notes',
-]
-shift-ctrl-z = [
-    'exec-and-forget ~/.config/aerospace/plugins/focus_app.sh us.zoom.xos zoom.us',
-]
+# shift-ctrl-t = [
+#     'exec-and-forget ~/.config/aerospace/plugins/focus_app.sh com.mitchellh.ghostty Ghostty',
+# ]
+# shift-ctrl-f = [
+#     'exec-and-forget ~/.config/aerospace/plugins/focus_app.sh com.apple.finder Finder',
+# ]
+# shift-ctrl-n = [
+#     'exec-and-forget ~/.config/aerospace/plugins/focus_app.sh com.apple.notes Notes',
+# ]
+# shift-ctrl-z = [
+#     'exec-and-forget ~/.config/aerospace/plugins/focus_app.sh us.zoom.xos zoom.us',
+# ]
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 shift-alt-slash = 'layout tiles horizontal vertical'
 shift-alt-comma = 'layout accordion horizontal vertical'
