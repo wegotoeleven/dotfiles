@@ -36,10 +36,10 @@ font-family = "DejaVu Sans Mono"
 window-title-font-family = "SFMono Nerd Font"
 window-title-font-family = "DejaVu Sans Mono"
 adjust-cell-width = -1
-keybind = super+shift+h=goto_split:left
-keybind = super+shift+j=goto_split:bottom
-keybind = super+shift+k=goto_split:top
-keybind = super+shift+l=goto_split:right
+keybind = super+shift+left=goto_split:left
+keybind = super+shift+down=goto_split:bottom
+keybind = super+shift+up=goto_split:top
+keybind = super+shift+right=goto_split:right
 keybind = super+shift+m=write_scrollback_file:open
 macos-titlebar-style = tabs
 macos-icon = custom-style
