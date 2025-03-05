@@ -28,6 +28,9 @@ for THEME_DIR in ~/.zsh/themes/**/*(/); do
     fpath+="${THEME_DIR}"
 done
 
+# Add plugin directories
+source ~/.zsh/plugins/zsh-shift-select/zsh-shift-select.plugin.zsh
+
 # Load Zsh modules
 autoload -Uz compinit && compinit        # Enable command completion
 autoload -Uz promptinit && promptinit    # Enable prompt customization
@@ -46,9 +49,6 @@ setopt PROMPT_SUBST           # Enable command substitution in prompt
 setopt NO_HIST_NO_STORE       # Ensure history for the current session is included
 
 ##### Key Bindings
-
-# Enable vi mode
-set -o vi
 
 # Arrow key history search
 bindkey "${terminfo[kcuu1]}" up-line-or-search      # Search history with up arrow

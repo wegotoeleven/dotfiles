@@ -38,9 +38,6 @@ PROMPT_COMMAND="history -a; history -c; history -r" # Sync history after every c
 
 ##### Key Bindings
 
-# Enable vi mode
-set -o vi
-
 # Arrow key history search (requires `bind` instead of `bindkey`)
 bind '"\e[A": history-search-backward'   # Up arrow
 bind '"\e[B": history-search-forward'    # Down arrow

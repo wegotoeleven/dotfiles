@@ -10,3 +10,6 @@
 [submodule "dotbot"]
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
+[submodule "shell/zsh/plugins/zsh-shift-select"]
+	path = shell/zsh/plugins/zsh-shift-select
+	url = https://github.com/jirutka/zsh-shift-select
