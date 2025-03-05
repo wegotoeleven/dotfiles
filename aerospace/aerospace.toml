@@ -56,24 +56,24 @@ outer.right = 10
 #     'exec-and-forget ~/.config/aerospace/plugins/focus_app.sh us.zoom.xos zoom.us',
 # ]
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
-shift-alt-slash = 'layout tiles horizontal vertical'
-shift-alt-comma = 'layout accordion horizontal vertical'
-shift-alt-f = 'layout floating tiling'
+shift-cmd-comma = 'layout tiles horizontal vertical'
+shift-cmd-period = 'layout accordion horizontal vertical'
+shift-cmd-slash = 'layout floating tiling'
 # See: https://nikitabobko.github.io/AeroSpace/commands#focus
-shift-alt-h = 'focus left'
-shift-alt-j = 'focus down'
-shift-alt-k = 'focus up'
-shift-alt-l = 'focus right'
+shift-cmd-j = 'focus left'
+shift-cmd-k = 'focus down'
+shift-cmd-l = 'focus up'
+shift-cmd-semicolon = 'focus right'
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
 # This is set this way to be consistent with the default keybinding for moving a window
 # with the mouse in macOS
-ctrl-cmd-h = 'move left'
-ctrl-cmd-j = 'move down'
-ctrl-cmd-k = 'move up'
-ctrl-cmd-l = 'move right'
+ctrl-cmd-j = 'move left'
+ctrl-cmd-k = 'move down'
+ctrl-cmd-l = 'move up'
+ctrl-cmd-semicolon = 'move right'
 # See: https://nikitabobko.github.io/AeroSpace/commands#resize◊
-shift-alt-minus = 'resize smart -50'
-shift-alt-equal = 'resize smart +50'
+shift-cmd-minus = 'resize smart -50'
+shift-cmd-equal = 'resize smart +50'
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
