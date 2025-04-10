@@ -153,7 +153,7 @@ sudo chmod 444 /etc/pam.d/sudo_local
 defaults write cc.ffitch.shottr alwaysOnTop -bool true
 defaults write cc.ffitch.shottr areaCaptureMode -string "editor"
 defaults write cc.ffitch.shottr copyOnEsc -bool false
-defaults write cc.ffitch.shottr defaultFolder -string "~/Desktop"
+defaults write cc.ffitch.shottr defaultFolder -string "${HOME}/Desktop"
 defaults write cc.ffitch.shottr notificationType -string none
 defaults write cc.ffitch.shottr saveOnEsc -bool true
 
@@ -175,4 +175,4 @@ for app in \
 done
 
 # Delete all .DS_Store files to reset Finder views to the previously set defaults
-find ~/ -type f -name ".DS_Store" -delete
+find "${HOME}/" -type f -name ".DS_Store" -delete

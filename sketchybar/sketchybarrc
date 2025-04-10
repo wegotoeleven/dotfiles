@@ -20,29 +20,32 @@ sketchybar --bar position=top height=22 notch_display_height=43 blur_radius=30 c
 # https://felixkratz.github.io/SketchyBar/config/items
 
 default=(
-  padding_left=5
-  padding_right=5
-  icon.font="SFMono Nerd Font:Bold:15.0"
-  label.font="SF Pro:Bold:13.0"
-  icon.color=0xffffffff
-  label.color=0xffffffff
-  icon.padding_left=0
-  icon.padding_right=4
-  label.padding_left=4
-  label.padding_right=4
-  updated=on
+    padding_left=5
+    padding_right=5
+    icon.font="SFMono Nerd Font:Bold:15.0"
+    label.font="SF Pro:Bold:13.0"
+    icon.color=0xffffffff
+    label.color=0xffffffff
+    icon.padding_left=0
+    icon.padding_right=0
+    label.padding_left=4
+    label.padding_right=6
+    updated=on
 )
 sketchybar --default "${default[@]}"
+
+sketchybar --hotload on
 
 ##### Adding Left Items #####
 # We add some regular items to the left side of the bar, where
 # only the properties deviating from the current defaults need to be set
 
 sketchybar --add item chevron left \
-           --set chevron icon= label.drawing=off \
-           --add item front_app left \
-           --set front_app icon.drawing=off script="$PLUGIN_DIR/front_app.sh" \
-           --subscribe front_app front_app_switched
+    --set chevron icon= label.drawing=off \
+    --add item front_app left \
+    --set front_app icon.drawing=off \
+    script="$PLUGIN_DIR/front_app.sh" \
+    --subscribe front_app front_app_switched
 
 ##### Adding AeroSpace Workspace Indicators #####
 # Let's add some AeroSpace Workspaces:
@@ -52,8 +55,8 @@ sketchybar --add item chevron left \
 sketchybar --add event aerospace_workspace_change
 
 sketchybar --add item calendar right \
-           --set calendar update_freq=10       \
-                          script="$CONFIG_DIR/plugins/calendar.sh"
+    --set calendar update_freq=10 \
+    script="$CONFIG_DIR/plugins/calendar.sh"
 
 for sid in $(aerospace list-workspaces --all | sort -r); do
     sketchybar --add item space.$sid right \
