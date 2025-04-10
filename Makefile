@@ -33,8 +33,12 @@ install: ## Setup apps
 		fi; \
 		echo "Running Brew Bundle..."; \
 		brew bundle --file=./macos/brewfile; \
+	elif [ "$(OS)" = "Linux" ]; then \
+		echo "Detected Linux."; \
+		echo "Running aptfile..."; \
+		bash ./linux/aptfile; \
 	else \
-		echo "Detected Linux or unsupported OS."; \
+		echo "Detected unsupported OS."; \
 	fi
 	@echo "Installation process complete."
 
