@@ -58,9 +58,9 @@ bindkey "^F" history-incremental-search-forward     # Search history with Ctrl+F
 
 ##### Additional Configurations
 
-# Source extra configuration files
-for extra_file in "${HOME}/.zshrc-extra" "${HOME}/.aliases"; do
-    [[ -e "${extra_file}" ]] && source "${extra_file}"
+# Source extra configuration files, including symlinks
+for extra_file in "${HOME}"/.zshrc-* "${HOME}/.aliases"; do
+    [[ -e "$extra_file" ]] && source "$extra_file"
 done
 
 ##### Functions
