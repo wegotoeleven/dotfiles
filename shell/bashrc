@@ -45,7 +45,7 @@ bind '"\C-r": reverse-search-history'    # Ctrl+R for incremental search
 
 ##### Additional Configurations
 
-# Source extra configuration files
-for extra_file in "${HOME}/.bashrc-extra" "${HOME}/.aliases"; do
-    [[ -f "${extra_file}" ]] && source "${extra_file}"
+# Source extra configuration files, including symlinks
+for extra_file in ${HOME}/.bashrc-* ${HOME}/.aliases; do
+    [[ -e "$extra_file" ]] && source "$extra_file"
 done
