@@ -10,7 +10,7 @@ cask_args appdir: "/Applications"
 # Global casks
 cask "font-sf-pro"
 cask "font-sf-mono"
-cask "font-sf-mono-nerd-font"
+cask "font-sf-mono-nerd-font-ligaturized"
 cask "font-sf-compact"
 cask "font-new-york"
 cask "ghostty"
