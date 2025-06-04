@@ -4,5 +4,6 @@
 
 # brew install
 brew "lima"
+brew "lima-additional-guestagents"
 
 # brew install --cask
