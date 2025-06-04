@@ -3,5 +3,6 @@
 # brew tap
 
 # brew install
+brew "lima"
 
 # brew install --cask
