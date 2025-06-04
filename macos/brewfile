@@ -1,33 +1,28 @@
+# Main Brewfile
+
+def hw_model
+  return nil unless OS.mac?
+  `sysctl -n hw.model`.strip
+end
+
 cask_args appdir: "/Applications"
 
-# brew tap
-tap "homebrew/bundle"
-tap "nikitabobko/tap"
-tap "FelixKratz/formulae"
-
-# brew install
-brew "mas"
-brew "sketchybar"
-brew "borders"
-
-# brew install --cask
+# Global casks
 cask "font-sf-pro"
 cask "font-sf-mono"
 cask "font-sf-mono-nerd-font"
 cask "font-sf-compact"
 cask "font-new-york"
-cask "appcleaner"
 cask "ghostty"
-cask "tailscale"
-cask "visual-studio-code"
-cask "raycast"
-cask "aerospace"
-cask "shottr"
-cask "1password"
-cask "appcleaner"
-cask "google-drive"
 
-# mas install
-mas "1Password for Safari", id: 1569813296
-mas "AdGuard for Safari", id: 1440147259
-mas "Mapper for Safari", id: 1589391989
+# Determine external Brewfile based on hardware
+brewfile_name = hw_model&.start_with?("Macmini") ? "brewfile-server" : "brewfile-endpoint"
+external_file = File.expand_path(brewfile_name, __dir__)
+
+# Execute external Brewfile in memory directly
+if File.exist?(external_file)
+  puts "✅ Adding brews from external file: #{external_file}"
+  instance_eval(File.read(external_file), external_file)
+else
+  puts "⚠️ Brewfile not found: #{external_file}"
+end
