@@ -19,6 +19,15 @@ cask "shottr"
 cask "1password"
 cask "appcleaner"
 cask "google-drive"
+cask "ghostty"
+cask "font-sf-pro"
+cask "font-sf-mono"
+cask "font-sf-mono-nerd-font-ligaturized"
+cask "font-sf-compact"
+cask "font-new-york"
+cask "font-ibm-plex-sans"
+cask "font-ibm-plex-serif"
+cask "font-ibm-plex-mono"
 
 # mas install
 mas "1Password for Safari", id: 1569813296

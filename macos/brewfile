@@ -7,14 +7,6 @@ end
 
 cask_args appdir: "/Applications"
 
-# Global casks
-cask "font-sf-pro"
-cask "font-sf-mono"
-cask "font-sf-mono-nerd-font-ligaturized"
-cask "font-sf-compact"
-cask "font-new-york"
-cask "ghostty"
-
 # Determine external Brewfile based on hardware
 brewfile_name = hw_model&.start_with?("Macmini") ? "brewfile-server" : "brewfile-endpoint"
 external_file = File.expand_path(brewfile_name, __dir__)
