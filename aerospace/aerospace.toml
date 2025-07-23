@@ -212,6 +212,10 @@ if.app-id = 'com.apple.AppStore'
 run = 'layout floating'
 
 [[on-window-detected]]
+if.app-id = 'io.zsa.keymapp'
+run = 'layout floating'
+
+[[on-window-detected]]
 if.app-id = 'com.pokemon.pokemontcgl'
 run = 'layout floating'
 

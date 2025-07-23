@@ -14,6 +14,7 @@ window-step-resize = true
 background = #1E1E1E
 foreground = #D4D4D4
 cursor-color = #C0C1B5
+split-divider-color = #444444
 palette = 0=#272822
 palette = 1=#F92672
 palette = 2=#A6E22E
@@ -40,6 +41,7 @@ keybind = super+shift+left=goto_split:left
 keybind = super+shift+down=goto_split:bottom
 keybind = super+shift+up=goto_split:top
 keybind = super+shift+right=goto_split:right
+keybind = super+shift+equal=equalize_splits
 keybind = super+shift+m=write_scrollback_file:open
 macos-titlebar-style = tabs
 macos-icon = custom-style
