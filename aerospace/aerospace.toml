@@ -164,6 +164,10 @@ if.app-id = 'com.apple.Music'
 run = 'move-node-to-workspace Music'
 
 [[on-window-detected]]
+if.app-id = 'com.spotify.client'
+run = 'move-node-to-workspace Music'
+
+[[on-window-detected]]
 if.app-id = 'com.apple.finder'
 run = 'layout floating'
 
