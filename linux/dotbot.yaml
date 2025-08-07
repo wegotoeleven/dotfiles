@@ -26,6 +26,9 @@
     # vim
     ~/.vimrc: ~/.dotfiles/vim/vimrc
 
+    # tmux
+    ~/.tmux.conf: ~/.dotfiles/tmux/tmux.conf
+
     # Ghostty
     ~/.config/ghostty/config: ~/.dotfiles/ghostty/config
 

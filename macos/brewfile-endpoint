@@ -8,6 +8,7 @@ tap "FelixKratz/formulae"
 brew "mas"
 brew "sketchybar"
 brew "borders"
+brew "mackup"
 
 # brew install --cask
 cask "appcleaner"
