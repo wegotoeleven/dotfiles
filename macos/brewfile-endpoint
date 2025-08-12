@@ -6,7 +6,6 @@ tap "FelixKratz/formulae"
 
 # brew install
 brew "mas"
-brew "sketchybar"
 brew "borders"
 brew "mackup"
 

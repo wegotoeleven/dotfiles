@@ -115,8 +115,9 @@ defaults write com.apple.Safari ShowStandaloneTabBar -bool false
 # Misc #
 # ---- #
 
-# Hide menu bar
-defaults write NSGlobalDomain _HIHideMenuBar -bool true
+# Never hide menu bar
+defaults write NSGlobalDomain _HIHideMenuBar -bool false
+defaults write NSGlobalDomain AppleMenuBarVisibleInFullscreen -bool true
 
 # Ensure save dialogues expand by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
@@ -175,4 +176,4 @@ for app in \
 done
 
 # Delete all .DS_Store files to reset Finder views to the previously set defaults
-find "${HOME}/" -type f -name ".DS_Store" -delete
+ find "${HOME}/" -type f -name ".DS_Store" -delete 2>/dev/null

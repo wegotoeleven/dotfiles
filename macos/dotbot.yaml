@@ -36,11 +36,7 @@
     ~/.config/aerospace/aerospace.toml: ~/.dotfiles/aerospace/aerospace.toml
     ~/.config/aerospace/plugins/focus_app.sh: ~/.dotfiles/aerospace/focus_app.sh
 
-    # sketchybar and borders
-    ~/.config/sketchybar/sketchybarrc: ~/.dotfiles/sketchybar/sketchybarrc
-    ~/.config/sketchybar/plugins/aerospace.sh: ~/.dotfiles/sketchybar/aerospace.sh
-    ~/.config/sketchybar/plugins/calendar.sh: ~/.dotfiles/sketchybar/calendar.sh
-    ~/.config/sketchybar/plugins/front_app.sh: ~/.dotfiles/sketchybar/front_app.sh
+    # borders
     ~/.config/borders/bordersrc: ~/.dotfiles/borders/bordersrc
 
     # 1Password

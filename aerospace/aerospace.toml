@@ -3,7 +3,7 @@ start-at-login = true
 # Available commands: https://nikitabobko.github.io/AeroSpace/commands
 after-login-command = []
 after-startup-command = [
-    'exec-and-forget sketchybar',
+    # 'exec-and-forget sketchybar',
     'exec-and-forget borders',
 ]
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
@@ -20,12 +20,12 @@ default-root-container-orientation = 'auto'
 # See: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
 automatically-unhide-macos-hidden-apps = true
 
-# Notify Sketchybar about workspace change
-exec-on-workspace-change = [
-    '/bin/bash',
-    '-c',
-    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE',
-]
+# # Notify Sketchybar about workspace change
+# exec-on-workspace-change = [
+#     '/bin/bash',
+#     '-c',
+#     'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE',
+# ]
 
 [key-mapping]
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
@@ -64,8 +64,8 @@ ctrl-cmd-minus = 'resize smart -50'
 ctrl-cmd-equal = 'resize smart +50'
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 ctrl-cmd-comma = 'layout floating tiling'
-ctrl-cmd-period = 'layout accordion tiles'
-ctrl-cmd-slash = 'layout horizontal vertical'
+ctrl-cmd-period = 'layout tiles horizontal vertical'
+ctrl-cmd-slash = 'layout accordion horizontal vertical'
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
