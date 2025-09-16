@@ -45,7 +45,3 @@ keybind = super+shift+equal=equalize_splits
 keybind = super+shift+m=write_scrollback_file:open
 keybind = shift+enter=text:\n
 macos-titlebar-style = tabs
-macos-icon = custom-style
-macos-icon-frame = plastic
-macos-icon-ghost-color = #FFFFFF
-macos-icon-screen-color = #111111
