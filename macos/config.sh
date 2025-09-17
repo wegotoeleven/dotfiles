@@ -1,179 +1,284 @@
 #!/usr/bin/env bash
+#
+# macOS Configuration Script
+# Description: This script configures macOS system settings, including Finder, Dock, Mission Control, Safari, and other system preferences.
+#
+# Usage: Run this script to apply changes to system and application settings.
+# Author: wegotoeleven
 
-# macos/config.sh
+########################################
+# Helper Functions
+########################################
 
-# --------- #
-# Functions #
-# --------- #
-
-# This function is an if statement that is used with Plistbuddy to check if a key exists in a plist file, and depending on the output, use `set` or add
+# Function to configure plist files using PlistBuddy
 plistbuddy() {
-	local PLIST="${1}"
-	local KEY="${2}"
-	local TYPE="${3}"
-	local VALUE="${4}"
-	if /usr/libexec/PlistBuddy -c "Print ${KEY}" "${PLIST}" >/dev/null 2>&1; then
-		/usr/libexec/PlistBuddy -c "Set ${KEY} ${VALUE}" "${PLIST}"
-	else
-		/usr/libexec/PlistBuddy -c "Add ${KEY} ${TYPE} ${VALUE}" "${PLIST}"
-	fi
+    local plist="${1}"
+    local key="${2}"
+    local type="${3}"
+    local value="${4}"
+    if /usr/libexec/PlistBuddy -c "Print ${key}" "${plist}" >/dev/null 2>&1; then
+        /usr/libexec/PlistBuddy -c "Set ${key} ${value}" "${plist}"
+    else
+        /usr/libexec/PlistBuddy -c "Add ${key} ${TYPE} ${value}" "${plist}"
+    fi
 }
 
-# ------ #
-# Finder #
-# ------ #
+# Function to configure settings using defaults write (or plistbuddy based on type)
+write_setting() {
+    local method="${1}"   # 'defaults' or 'plistbuddy'
+    local plist="${2}"    # plist file
+    local key="${3}"      # key to set
+    local type="${4}"     # type of the value
+    local value="${5}"    # value to set
 
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "DesktopViewSettings:GroupBy" "string" "Kind"
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "DesktopViewSettings:IconViewSettings:iconSize" "integer" 48
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "DesktopViewSettings:IconViewSettings:labelOnBottom" "bool" false
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "DesktopViewSettings:IconViewSettings:showItemInfo" "bool" true
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "DesktopViewSettings:IconViewSettings:textSize" "integer" 11
+    if [[ "$method" == "defaults" ]]; then
+        defaults write "$plist" "$key" "$type" "$value"
+    elif [[ "$method" == "plistbuddy" ]]; then
+        plistbuddy "$plist" "$key" "$type" "$value"
+    else
+        echo "Invalid method specified."
+        exit 1
+    fi
+}
 
-# FileKit settings (i.e Save dialogs)
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "FK_StandardViewSettings:IconViewSettings:arrangeBy" "string" "Kind"
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "FK_StandardViewSettings:IconViewSettings:iconSize" "integer" 48
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "FK_StandardViewSettings:IconViewSettings:textSize" "integer" 11
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "FK_StandardViewSettings:ExtendedListViewSettingsV2:calculateAllSizes" "bool" true
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "FK_StandardViewSettings:ExtendedListViewSettingsV2:sortColumn" "string" "Kind"
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "FK_StandardViewSettings:ExtendedListViewSettingsV2:textSize" "integer" 11
+# Function to restart applications
+restart_apps() {
+    local apps=(
+        "cfprefsd"
+        "SystemUIServer"
+        "Dock"
+        "Finder"
+        "Shottr"
+    )
+    for app in "${apps[@]}"; do
+        killall "$app" &>/dev/null
+    done
+}
 
-# Finder view settings
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:IconViewSettings:arrangeBy" "string" "Kind"
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:IconViewSettings:iconSize" "integer" 48
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:IconViewSettings:textSize" "integer" 11
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:ExtendedListViewSettingsV2:calculateAllSizes" "bool" true
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:ExtendedListViewSettingsV2:sortColumn" "string" "Kind"
-plistbuddy "${HOME}/Library/Preferences/com.apple.finder.plist" "StandardViewSettings:ExtendedListViewSettingsV2:textSize" "integer" 11
+########################################
+# Finder Configuration
+########################################
 
-# Show items on the desktop... but then hide it :)
-defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
-defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
-defaults write com.apple.finder CreateDesktop -bool false
+# Configure Finder settings (using defaults write)
+configure_finder() {
+    local plist="$HOME/Library/Preferences/com.apple.finder.plist"
+    local settings=(
+        "ShowHardDrivesOnDesktop|bool|false"
+        "ShowExternalHardDrivesOnDesktop|bool|false"
+        "ShowMountedServersOnDesktop|bool|false"
+        "ShowRemovableMediaOnDesktop|bool|false"
+        "CreateDesktop|bool|false"
+        "NewWindowTarget|string|PfHm"
+        "FinderSpawnTab|bool|false"
+        "FXDefaultSearchScope|string|SCcf"
+        "ShowRecentTags|bool|false"
+        "_FXSortFoldersFirst|bool|true"
+        "_FXSortFoldersFirstOnDesktop|bool|true"
+        "FXPreferredViewStyle|string|Nlsv"
+    )
+    for setting in "${settings[@]}"; do
+        IFS="|" read -r key type value <<< "$setting"
+        write_setting "defaults" "$plist" "$key" "-$type" "$value"
+    done
+}
 
-# Set the new window target to the home directory
-defaults write com.apple.finder NewWindowTarget -string "PfHm"
+# Configure Finder settings (using PlistBuddy for specific settings)
+configure_finder_plist() {
+    local plist="$HOME/Library/Preferences/com.apple.finder.plist"
+    local settings=(
+        "DesktopViewSettings:GroupBy|string|Kind"
+        "DesktopViewSettings:IconViewSettings:iconSize|integer|48"
+        "DesktopViewSettings:IconViewSettings:labelOnBottom|bool|false"
+        "DesktopViewSettings:IconViewSettings:showItemInfo|bool|true"
+        "DesktopViewSettings:IconViewSettings:textSize|integer|11"
+        "FK_StandardViewSettings:IconViewSettings:arrangeBy|string|Kind"
+        "FK_StandardViewSettings:IconViewSettings:iconSize|integer|48"
+        "FK_StandardViewSettings:IconViewSettings:textSize|integer|11"
+        "FK_StandardViewSettings:ExtendedListViewSettingsV2:calculateAllSizes|bool|true"
+        "FK_StandardViewSettings:ExtendedListViewSettingsV2:sortColumn|string|Kind"
+        "FK_StandardViewSettings:ExtendedListViewSettingsV2:textSize|integer|11"
+        "StandardViewSettings:IconViewSettings:arrangeBy|string|Kind"
+        "StandardViewSettings:IconViewSettings:iconSize|integer|48"
+        "StandardViewSettings:IconViewSettings:textSize|integer|11"
+        "StandardViewSettings:ExtendedListViewSettingsV2:calculateAllSizes|bool|true"
+        "StandardViewSettings:ExtendedListViewSettingsV2:sortColumn|string|Kind"
+        "StandardViewSettings:ExtendedListViewSettingsV2:textSize|integer|11"
+    )
+    for setting in "${settings[@]}"; do
+        IFS="|" read -r key type value <<< "$setting"
+        write_setting "plistbuddy" "$plist" "$key" "$type" "$value"
+    done
+}
 
-# Spawn Finder in windows instead of tabs
-defaults write com.apple.finder FinderSpawnTab -bool false
+########################################
+# Desktop and Dock Configuration
+########################################
 
-# Set the search scope to the current folder
-defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+# Configure Dock settings (using defaults write)
+configure_dock() {
+    local plist="com.apple.dock"
+    local settings=(
+        "tilesize|int|48"
+        "autohide|bool|true"
+        "show-recents|bool|false"
+        "persistent-apps|array|"
+        "mru-spaces|bool|false"
+        "expose-group-apps|bool|true"
+        "enterMissionControlByTopWindowDrag|bool|false"
+    )
+    for setting in "${settings[@]}"; do
+        IFS="|" read -r key type value <<< "$setting"
+        write_setting "defaults" "$plist" "$key" "-$type" "$value"
+    done
+}
 
-# Disable Finder recent tags
-defaults write com.apple.finder ShowRecentTags -bool false
+# Configure Mission Control settings (using defaults write)
+configure_mission_control() {
+    local plist="com.apple.spaces"
+    local settings=(
+        "spans-displays|bool|true"
+    )
+    for setting in "${settings[@]}"; do
+        IFS="|" read -r key type value <<< "$setting"
+        write_setting "defaults" "$plist" "$key" "-$type" "$value"
+    done
+}
 
-# Set the sort settings to put folders first
-defaults write com.apple.finder _FXSortFoldersFirst -bool true
-defaults write com.apple.finder _FXSortFoldersFirstOnDesktop -bool true
+# Configure Widget settings (using defaults write)
+configure_widgets() {
+	local plist="com.apple.chronod"
+    local settings=(
+        "remoteWidgetsEnabled|bool|false"
+		"effectiveRemoteWidgetsEnabled|bool|false"
+    )
+    for setting in "${settings[@]}"; do
+        IFS="|" read -r key type value <<< "$setting"
+        write_setting "defaults" "$plist" "$key" "-$type" "$value"
+    done
+}
 
-# Use list view in all Finder windows by default
-# Four-letter codes for the other view modes: `icnv`, `clmv`, `glyv`
-defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+########################################
+# Safari Configuration
+########################################
 
-# ---- #
-# Dock #
-# ---- #
+# Configure Safari settings (using defaults write)
+# Uncomment the lines below to enable Safari Developer menu (optional)
+# configure_safari() {
+# 	local plist="com.apple.Safari"
+#     local settings=(
+#         "IncludeDevelopMenu|bool|true"
+# 		"WebKitDeveloperExtrasEnabledPreferenceKey|bool|true"
+# 		"WebKitPreferences.developerExtrasEnabled|bool|true"
+# 		"ShowDevelopMenu|bool|true"
+#     )
+#     for setting in "${settings[@]}"; do
+#         IFS="|" read -r key type value <<< "$setting"
+#         write_setting "defaults" "$plist" "$key" "-$type" "$value"
+#     done
+# }
 
-# Set the icon size of Dock items to 48 pixels
-defaults write com.apple.dock tilesize -int 48
+########################################
+# Miscellaneous Configuration
+########################################
 
-# Set the Dock to auto-hide
-defaults write com.apple.dock autohide -bool true
+# Configure miscellaneous system preferences (using defaults write)
+configure_globals() {
+	local plist="NSGlobalDomain"
+    local settings=(
+        "_HIHideMenuBar|bool|false"
+		"AppleMenuBarVisibleInFullscreen|bool|true"
+		"NSNavPanelExpandedStateForSaveMode|bool|true"
+		"NSNavPanelExpandedStateForSaveMode2|bool|true"
+		"NSDocumentSaveNewDocumentsToCloud|bool|false"
+		"NSTableViewDefaultSizeMode|int|1"
+		"AppleKeyboardUIMode|int|2"
+		"InitialKeyRepeat|int|15"
+		"KeyRepeat|int|2"
+		"ApplePressAndHoldEnabled|bool|false"
+		"NSWindowShouldDragOnGesture|bool|true"
+    )
+    for setting in "${settings[@]}"; do
+        IFS="|" read -r key type value <<< "$setting"
+        write_setting "defaults" "$plist" "$key" "-$type" "$value"
+    done
+}
 
-# Disable recent applications in Dock
-defaults write com.apple.dock show-recents -bool false
+########################################
+# Shottr Configuration
+########################################
 
-# Wipe all default icons from the Dock
-defaults write com.apple.dock persistent-apps -array
+# Configure Shottr app settings (using defaults write)
+configure_shottr() {
+	local plist="cc.ffitch.shottr"
+    local settings=(
+        "alwaysOnTop|bool|true"
+		"areaCaptureMode|string|editor"
+		"copyOnEsc|bool|false"
+		"defaultFolder|string|${HOME}/Desktop"
+		"notificationType|string|none"
+		"saveOnEsc|bool|true"
+    )
+    for setting in "${settings[@]}"; do
+        IFS="|" read -r key type value <<< "$setting"
+        write_setting "defaults" "$plist" "$key" "-$type" "$value"
+    done
+}
 
-# Disable rearrange spaces based on most recent use
-defaults write com.apple.dock mru-spaces -bool false
+########################################
+# Final Steps
+########################################
 
-# Enable group apps by application in Mission Control
-defaults write com.apple.dock expose-group-apps -bool true 
+# Reveal the ~/Library folder in Finder
+reveal_library_folder() {
+    chflags nohidden "${HOME}/Library"
+}
 
-# Disable mission control with window drag
-defaults write com.apple.dock enterMissionControlByTopWindowDrag -bool false
+# Delete all .DS_Store files
+clear_ds_store() {
+    find "${HOME}/" -type f -name ".DS_Store" -delete 2>/dev/null
+}
 
-# --------------- #
-# Mission Control #
-# --------------- #
-
-# Disable Displays have separate spaces
-defaults write com.apple.spaces spans-displays -bool true
-
-# ------ #
-# Safari #
-# ------ #
-
-# Configure compact tab layout in Safari
-defaults write com.apple.Safari ShowStandaloneTabBar -bool false 
-
-# ---- #
-# Misc #
-# ---- #
-
-# Never hide menu bar
-defaults write NSGlobalDomain _HIHideMenuBar -bool false
-defaults write NSGlobalDomain AppleMenuBarVisibleInFullscreen -bool true
-
-# Ensure save dialogues expand by default
-defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
-defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
-
-# Disable iCloud save panel
-defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
-
-# Set sidebar item size to small
-defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 1
-
-# Set key repeat rate to fast
-defaults write NSGlobalDomain InitialKeyRepeat -int 15
-defaults write NSGlobalDomain KeyRepeat -int 2
-
-# Disable press-and-hold for keys in favor of key repeat
-defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
-
-# Enable ctrl-cmd window dragging
-defaults write NSGlobalDomain NSWindowShouldDragOnGesture -bool true
-
-# Setup sudo to use Touch ID
-sudo tee /etc/pam.d/sudo_local <<EOF
+# Setup Touch ID for sudo authentication
+setup_touchid_sudo() {
+    sudo tee /etc/pam.d/sudo_local <<EOF
 auth       sufficient     pam_tid.so
 EOF
-sudo chown root:wheel /etc/pam.d/sudo_local
-sudo chmod 444 /etc/pam.d/sudo_local
+    sudo chown root:wheel /etc/pam.d/sudo_local
+    sudo chmod 444 /etc/pam.d/sudo_local
+}
 
-# ---------- #
-# Other apps #
-# ---------- #
+########################################
+# Main Function
+########################################
 
-# Shottr
-defaults write cc.ffitch.shottr alwaysOnTop -bool true
-defaults write cc.ffitch.shottr areaCaptureMode -string "editor"
-defaults write cc.ffitch.shottr copyOnEsc -bool false
-defaults write cc.ffitch.shottr defaultFolder -string "${HOME}/Desktop"
-defaults write cc.ffitch.shottr notificationType -string none
-defaults write cc.ffitch.shottr saveOnEsc -bool true
+# Main script execution starts here
+main() {
+    # Configure Finder settings
+    configure_finder
+    configure_finder_plist
 
-# ------------ #
-# Final things #
-# ------------ #
+    # Configure Desktop and Dock settings
+    configure_dock
+    configure_mission_control
+	configure_widgets
 
-# Show the ~/Library folder
-chflags nohidden "${HOME}/Library"
+    # Configure Safari settings (optional)
+    # configure_safari
 
-# Restart all apps
-for app in \
-	"cfprefsd" \
-	"SystemUIServer" \
-	"Dock" \
-	"Finder" \
-	"Shottr"; do
-	killall "${app}" &> /dev/null
-done
+    # Configure global settings
+    configure_globals
 
-# Delete all .DS_Store files to reset Finder views to the previously set defaults
- find "${HOME}/" -type f -name ".DS_Store" -delete 2>/dev/null
+    # Configure third-party app settings
+    configure_shottr
+
+    # Final cleanup and setup
+    reveal_library_folder
+    clear_ds_store
+    setup_touchid_sudo
+
+    # Restart all configured apps
+    restart_apps
+}
+
+# Execute the main function
+main "$@"

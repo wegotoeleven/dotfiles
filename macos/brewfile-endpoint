@@ -7,13 +7,13 @@ tap "FelixKratz/formulae"
 # brew install
 brew "mas"
 brew "borders"
-brew "mackup"
+#brew "mackup"
 
 # brew install --cask
 cask "appcleaner"
 cask "tailscale"
 cask "visual-studio-code"
-cask "raycast"
+#cask "raycast"
 cask "aerospace"
 cask "shottr"
 cask "1password"
