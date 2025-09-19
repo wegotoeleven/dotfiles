@@ -1,8 +1,6 @@
 start-at-login = true
 after-login-command = []
-after-startup-command = [
-    'exec-and-forget borders',
-]
+after-startup-command = ['exec-and-forget borders']
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
 accordion-padding = 75
@@ -61,7 +59,12 @@ shift-alt-b = ['move-node-to-workspace Browsing']
 shift-alt-c = ['move-node-to-workspace Code']
 shift-alt-m = ['move-node-to-workspace Music']
 shift-alt-s = ['move-node-to-workspace Slack']
-shift-cmd-enter = 'mode service'
+shift-ctrl-esc = 'mode service'
+# shift-ctrl-f = 'exec-and-forget /Users/stephenwb/Projects/dotfiles/aerospace/focus_app.sh com.apple.finder Finder'
+shift-ctrl-enter = 'exec-and-forget /Users/stephenwb/Projects/dotfiles/aerospace/focus_app.sh com.mitchellh.ghostty "Ghostty"'
+shift-ctrl-c = 'exec-and-forget /Users/stephenwb/Projects/dotfiles/aerospace/focus_app.sh com.microsoft.VSCode "Code"'
+shift-ctrl-g = 'exec-and-forget /Users/stephenwb/Projects/dotfiles/aerospace/focus_app.sh com.google.Chrome "Google Chrome"'
+shift-ctrl-s = 'exec-and-forget /Users/stephenwb/Projects/dotfiles/aerospace/focus_app.sh com.apple.Safari "Safari"'
 
 [[on-window-detected]]
 if.app-id = 'com.google.Chrome'

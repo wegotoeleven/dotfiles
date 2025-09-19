@@ -19,7 +19,7 @@ plistbuddy() {
     if /usr/libexec/PlistBuddy -c "Print ${key}" "${plist}" >/dev/null 2>&1; then
         /usr/libexec/PlistBuddy -c "Set ${key} ${value}" "${plist}"
     else
-        /usr/libexec/PlistBuddy -c "Add ${key} ${TYPE} ${value}" "${plist}"
+        /usr/libexec/PlistBuddy -c "Add ${key} ${type} ${value}" "${plist}"
     fi
 }
 
@@ -61,7 +61,7 @@ restart_apps() {
 
 # Configure Finder settings (using defaults write)
 configure_finder() {
-    local plist="$HOME/Library/Preferences/com.apple.finder.plist"
+    local plist="${HOME}/Library/Preferences/com.apple.finder.plist"
     local settings=(
         "ShowHardDrivesOnDesktop|bool|false"
         "ShowExternalHardDrivesOnDesktop|bool|false"
@@ -84,7 +84,7 @@ configure_finder() {
 
 # Configure Finder settings (using PlistBuddy for specific settings)
 configure_finder_plist() {
-    local plist="$HOME/Library/Preferences/com.apple.finder.plist"
+    local plist="${HOME}/Library/Preferences/com.apple.finder.plist"
     local settings=(
         "DesktopViewSettings:GroupBy|string|Kind"
         "DesktopViewSettings:IconViewSettings:iconSize|integer|48"
@@ -121,7 +121,7 @@ configure_dock() {
         "tilesize|int|48"
         "autohide|bool|true"
         "show-recents|bool|false"
-        "persistent-apps|array|"
+        "static-only|bool|true"
         "mru-spaces|bool|false"
         "expose-group-apps|bool|true"
         "enterMissionControlByTopWindowDrag|bool|false"
@@ -262,7 +262,7 @@ main() {
     configure_mission_control
 	configure_widgets
 
-    # Configure Safari settings (optional)
+    ## Configure Safari settings (optional)
     # configure_safari
 
     # Configure global settings
