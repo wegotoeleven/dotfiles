@@ -32,7 +32,7 @@ palette = 13=#FD971F
 palette = 14=#66D9EF
 palette = 15=#FDFFF1
 font-size = 13
-font-family = "SFMono Nerd Font"
+font-family = "Liga SFMono Nerd Font"
 font-family = "DejaVu Sans Mono"
 window-title-font-family = "SFMono Nerd Font"
 window-title-font-family = "DejaVu Sans Mono"

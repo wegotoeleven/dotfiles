@@ -11,7 +11,7 @@ brew "borders"
 
 # brew install --cask
 cask "appcleaner"
-cask "tailscale"
+cask "tailscale-app"
 cask "visual-studio-code"
 #cask "raycast"
 cask "aerospace"
